@@ -4,6 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const About: React.FC = () => {
   const [beliefsVisible, setBeliefsVisible] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const beliefsRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   const { about: aboutTranslations } = t;
@@ -38,8 +39,14 @@ const About: React.FC = () => {
             <p key={index}>{paragraph}</p>
           ))}
         </div>
-        <div className="p-2">
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=3540&auto=format&fit=crop" alt="PRt Agency Team in a professional meeting" className="w-full h-full object-cover" loading="lazy"/>
+        <div className="p-2 bg-prt-dark-gray/50 aspect-[4/3]">
+            <img 
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=3540&auto=format&fit=crop" 
+              alt="PRt Agency Team in a professional meeting" 
+              className={`w-full h-full object-cover transition-opacity duration-500 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onLoad={() => setIsImageLoaded(true)}
+              loading="lazy"
+            />
         </div>
       </div>
 

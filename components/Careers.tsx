@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Section from './Section';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Job } from '../types';
@@ -10,6 +10,7 @@ interface CareersProps {
 const Careers: React.FC<CareersProps> = ({ onApply }) => {
   const { t } = useLanguage();
   const { careers: careersTranslations } = t;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <Section 
@@ -33,8 +34,14 @@ const Careers: React.FC<CareersProps> = ({ onApply }) => {
             ))}
           </ul>
         </div>
-        <div className="p-2">
-            <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=3540&auto=format&fit=crop" alt="PRt Agency team collaborating and planning" className="w-full h-full object-cover" loading="lazy"/>
+        <div className="p-2 bg-prt-dark-gray/50 aspect-[4/3]">
+            <img 
+              src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=3540&auto=format&fit=crop" 
+              alt="PRt Agency team collaborating and planning" 
+              className={`w-full h-full object-cover transition-opacity duration-500 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onLoad={() => setIsImageLoaded(true)}
+              loading="lazy"
+            />
         </div>
       </div>
 

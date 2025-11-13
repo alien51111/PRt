@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Project } from '../types';
 
 interface ProjectCardProps {
@@ -8,6 +8,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   return (
     <div
       onClick={onClick}
@@ -18,14 +20,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
         hover:border-prt-accent/60 
         hover:shadow-2xl hover:shadow-prt-accent/10
         hover:-translate-y-2
-        animate-fade-in-up"
+        animate-fade-in-up
+        bg-black/20"
       style={{ animationDelay: `${index * 150}ms`, opacity: 0 }}
     >
       <img 
         src={project.image} 
         alt={project.title}
         loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110" 
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out group-hover:scale-110 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`} 
+        onLoad={() => setIsImageLoaded(true)}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
       
