@@ -1,33 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import Logo from './Logo';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  page: string;
+  setPage: (page: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ page, setPage }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, newPage: string) => {
     e.preventDefault();
-    const targetId = href.substring(1);
-    const targetElement = document.getElementById(targetId);
-
-    if (targetElement) {
-      targetElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-
+    setPage(newPage);
     if (isMenuOpen) {
       setIsMenuOpen(false);
     }
@@ -44,20 +30,22 @@ const Header: React.FC = () => {
   );
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${hasScrolled ? 'bg-black/80 shadow-lg backdrop-blur-lg' : 'bg-transparent'}`}>
+    <header className="sticky top-0 z-50 bg-black/80 shadow-lg backdrop-blur-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="text-2xl font-bold text-prt-accent tracking-wider" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            PRt
+          <a href="#" className="text-prt-accent" onClick={(e) => handleNavClick(e, 'home')}>
+            <Logo />
           </a>
           
           <nav className="hidden md:flex items-center">
             {t.navLinks.map((link) => (
               <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className="text-prt-light-gray hover:text-prt-accent transition-colors duration-300 px-4 whitespace-nowrap"
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={(e) => handleNavClick(e, link.id)}
+                className={`transition-colors duration-300 px-4 whitespace-nowrap ${
+                  page === link.id ? 'text-prt-accent font-bold' : 'text-prt-light-gray hover:text-prt-accent'
+                }`}
               >
                 {link.name}
               </a>
@@ -87,13 +75,13 @@ const Header: React.FC = () => {
         </div>
         
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 bg-prt-dark-gray/95 backdrop-blur-sm rounded-lg p-4">
+          <nav className="md:hidden mt-4 bg-prt-dark-gray/95 backdrop-blur-sm p-4">
             <div className="flex flex-col space-y-4">
               {t.navLinks.map((link) => (
                 <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
+                  key={link.id}
+                  href={`#${link.id}`}
+                  onClick={(e) => handleNavClick(e, link.id)}
                   className="text-prt-light-gray hover:text-prt-accent transition-colors duration-300 text-center py-2"
                 >
                   {link.name}

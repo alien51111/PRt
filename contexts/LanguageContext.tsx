@@ -4,12 +4,13 @@ import { translations } from '../translations';
 interface LanguageContextType {
   language: string;
   setLanguage: (language: string) => void;
+  setPage: (page: string) => void;
   t: any; 
 }
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const LanguageProvider: React.FC<{ children: ReactNode, setPage: (page: string) => void }> = ({ children, setPage }) => {
   const [language, setLanguage] = useState('en');
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   const value = {
     language,
     setLanguage,
+    setPage,
     t: translations[language],
   };
 

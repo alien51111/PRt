@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PRt Agency | Bridging Heritage & Innovation</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=line-clamp"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
               scaleIn: {
                 '0%': { opacity: 0, transform: 'scale(0.9)' },
                 '100%': { opacity: 1, transform: 'scale(1)' },
-              }
+              },
             },
             animation: {
               'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
@@ -45,6 +45,99 @@
         }
       }
     </script>
+    <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: #30332D;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #8A8B7D;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #CBFF08;
+      }
+
+      /* Global background pattern */
+      .bg-dots-pattern {
+         background-image: radial-gradient(rgba(203, 255, 8, 0.04) 1px, transparent 1px);
+         background-size: 20px 20px;
+      }
+
+      .content-fade-enter {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      .content-fade-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 300ms, transform 300ms;
+      }
+
+      /* Custom Animations for Cards */
+
+      /* Projects Summaries & About Mission/Vision - Glow Effect */
+      .card-glow:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 0 25px rgba(203, 255, 8, 0.25);
+        border-color: rgba(203, 255, 8, 0.7);
+      }
+
+      /* About Core Beliefs - 3D Tilt Effect */
+      .card-tilt-area {
+        perspective: 1200px;
+      }
+      .card-tilt {
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+      }
+      .card-tilt:hover {
+        transform: scale(1.05) rotateY(-8deg) rotateX(5deg);
+      }
+      
+      /* Clients Tags - Background Wipe */
+      .card-bg-wipe {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        transition: color 0.4s ease-out !important;
+      }
+      .card-bg-wipe::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #CBFF08;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        z-index: -1;
+      }
+      .card-bg-wipe:hover {
+        color: #30332D !important; /* prt-dark-gray */
+        border-color: #CBFF08 !important; /* prt-accent */
+      }
+      .card-bg-wipe:hover::before {
+        transform: scaleX(1);
+      }
+
+      /* Services List Items - Staggered Animation */
+      .service-item {
+        opacity: 0;
+        transform: translateX(20px);
+        animation: slideInRight 0.5s ease-out forwards;
+      }
+      @keyframes slideInRight {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
   <script type="importmap">
 {
   "imports": {

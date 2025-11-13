@@ -5,11 +5,17 @@ export interface ServiceCategory {
   items: string[];
 }
 
-export interface Project {
+export interface ProjectSummary {
   title: string;
   description: string;
-  impact: string;
+}
+
+export interface Project {
+  title: string;
   image: string;
+  overview: string;
+  approach?: string[];
+  impact: string[];
 }
 
 export interface CoreBelief {
@@ -24,4 +30,10 @@ export interface ValueStat {
   prefix?: string;
   suffix?: string;
   decimals?: number;
+}
+
+export interface Job {
+  title: string;
+  location: string;
+  type: string;
 }
