@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
+import HomePage from './pages/HomePage';
 import About from './components/About';
 import Services from './components/Services';
 import Projects from './components/Projects';
-import Values from './components/Values';
+import Careers from './components/Careers';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Spotlight from './components/Spotlight';
-import Clients from './components/Clients';
-import Careers from './components/Careers';
 import JobApplication from './components/JobApplication';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Job } from './types';
@@ -40,18 +38,13 @@ const App: React.FC = () => {
       case 'projects':
         return <Projects />;
       case 'careers':
+        // Fix: Corrected typo `setApplyingForforJob` to `setApplyingForJob`.
         return <Careers onApply={setApplyingForJob} />;
       case 'contact':
         return <Contact />;
       case 'home':
       default:
-        return (
-          <>
-            <Hero />
-            <Clients />
-            <Values />
-          </>
-        );
+        return <HomePage />;
     }
   };
 

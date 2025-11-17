@@ -33,7 +33,7 @@ const Values: React.FC = () => {
         >
             <style>{`
                 .bg-hash {
-                    background-image: repeating-linear-gradient(45deg, rgba(11, 83, 81, 0.05) 0, rgba(11, 83, 81, 0.05) 1px, transparent 0, transparent 50%);
+                    background-image: repeating-linear-gradient(45deg, rgba(48, 51, 45, 0.1) 0, rgba(48, 51, 45, 0.1) 1px, transparent 0, transparent 50%);
                     background-size: 6px 6px;
                 }
             `}</style>
@@ -43,7 +43,7 @@ const Values: React.FC = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                     {t.valueStats.map((stat) => (
                         <div key={stat.label}>
-                            <div className="text-4xl md:text-6xl font-extrabold">
+                            <div className="text-4xl md:text-6xl font-extrabold text-prt-dark-gray">
                                 {stat.prefix}
                                 {isVisible && <CountUp end={stat.value} decimals={stat.decimals} />}
                                 {stat.suffix}

@@ -1,4 +1,4 @@
-import type { ServiceCategory, Project, CoreBelief, ValueStat, ProjectSummary, Job } from './types';
+import type { ServiceCategory, Project, CoreBelief, ValueStat, Job, Testimonial, Insight, TeamMember } from './types';
 
 interface Translations {
   navLinks: { name: string; id: string }[];
@@ -14,6 +14,38 @@ interface Translations {
     mission: { title: string; text: string };
     vision: { title: string; text: string };
     coreBeliefs: { title: string; items: CoreBelief[] };
+    team: {
+      title: string;
+      subtitle: string;
+      members: TeamMember[];
+    }
+  };
+  technology: {
+    title: string;
+    subtitle: string;
+    feature1: {
+      title: string;
+      text: string;
+    };
+    feature2: {
+      title: string;
+      text: string;
+    };
+  };
+  process: {
+    title: string;
+    subtitle: string;
+    steps: { title: string; description: string, icon: string; }[];
+  };
+  insights: {
+    title: string;
+    subtitle: string;
+    items: Insight[];
+  };
+  testimonials: {
+    title: string;
+    subtitle: string;
+    items: Testimonial[];
   };
   services: {
       title: string;
@@ -23,9 +55,11 @@ interface Translations {
       title: string;
       subtitle: string;
       subtitle_detail: string;
+      approachLabel: string;
       impactLabel: string;
       cta: string;
-      summaries: ProjectSummary[];
+      cta_show_more: string;
+      cta_show_less: string;
       items: Project[];
   };
   valueStats: ValueStat[];
@@ -68,8 +102,7 @@ interface Translations {
   };
 }
 
-export const translations: { [key: string]: Translations } = {
-  en: {
+const enTranslations: Translations = {
     navLinks: [
       { name: 'Home', id: 'home' },
       { name: 'About', id: 'about' },
@@ -100,624 +133,670 @@ export const translations: { [key: string]: Translations } = {
             text: "To be recognized as Iraq’s foremost storyteller, turning everyday communication into powerful narratives that shape society and influence generations."
         },
         coreBeliefs: {
-            title: "Core Beliefs",
+            title: "Our Core Beliefs",
             items: [
-                { title: "Integrity Above All", description: "We protect your narrative as diligently as scribes of history." },
-                { title: "Extraordinary from the Ordinary", description: "We find poetry hidden within the mundane, crafting compelling stories from everyday moments." },
-                { title: "Milestones That Matter", description: "We measure success not in campaigns, but in cultural impact and lasting legacy." },
-                { title: "Innovation as a Creed", description: "We challenge convention, relentlessly exploring uncharted paths that redefine what's possible." },
-                { title: "Action Over Words", description: "Our commitments are etched in actions, not merely spoken." },
-                { title: "Unity in Diversity", description: "Our strength stems from diverse perspectives; each voice enriches our narrative." },
+                { title: "Integrity Above All", description: "We protect your narrative as diligently as scribes of history.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>` },
+                { title: "Extraordinary from the Ordinary", description: "We find poetry hidden within the mundane, crafting compelling stories from everyday moments.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9 9l-7 2 5 5-1 7 6-4 6 4-1-7 5-5-7-2z"></path></svg>` },
+                { title: "Milestones That Matter", description: "We measure success not in campaigns, but in cultural impact and lasting legacy.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>` },
+                { title: "Innovation as a Creed", description: "We challenge convention, relentlessly exploring uncharted paths that redefine what's possible.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 14h.01"></path><path d="M8.5 14h.01"></path><path d="M4.53 9.47 5.24 11"></path><path d="M19.47 9.47 18.76 11"></path><path d="m12 2-3.5 3.5"></path><path d="M12 22v-3.5"></path><path d="M9 18.5h6"></path><path d="M12 2v10c0 3.3-2.7 6-6 6h-1a6 6 0 0 1-6-6V8"></path><path d="m13 12 5-5"></path></svg>` },
+                { title: "Action Over Words", description: "Our commitments are etched in actions, not merely spoken.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>` },
+                { title: "Unity in Diversity", description: "Our strength stems from diverse perspectives; each voice enriches our narrative.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6"></path><path d="M23 11h-6"></path></svg>` },
             ],
         },
-    },
-    services: {
-        title: "Our Expertise",
-        items: [
-            { title: "Strategic Communication & Influence", description: "We shape perceptions and build powerful reputations by placing your brand at the center of influential conversations. Our strategies ensure your voice is heard by the people who matter most.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`, items: ["Specialized PR for Specific Industries", "Thought Leadership", "Public Affairs and Advocacy", "Crisis Management", "Media Relations", "Internal Communications", "Branding and Reputation Management"] },
-            { title: "Creative & Digital Storytelling", description: "In the digital age, stories are the currency of connection. We craft compelling, multi-platform narratives that capture attention, drive engagement, and build lasting communities around your brand.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`, items: ["Content Creation", "Creative Campaign Development", "Digital and Social Media PR", "Influencer Marketing", "Media Monitoring and Reporting", "Product and Service Launches"] },
-            { title: "Events & Community Activation", description: "We create unforgettable experiences that bring your brand to life. From high-profile launches to grassroots community programs, we build moments of connection that foster loyalty and advocacy.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`, items: ["Event Creation and Management", "On-Ground Activation", "Community Engagement", "Sponsorship and Endorsements", "Strategic Partnerships"] },
-            { title: "Insight, Research & Capacity Building", description: "Data-driven decisions are at the heart of impactful communication. We provide the market insights, analytics, and training needed to navigate complex landscapes and empower your team to excel.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`, items: ["Market Research and Analytics", "Training and Media Coaching"] },
-        ],
-    },
-    projects: {
-        title: "Proof in Practice",
-        subtitle: "A Glimpse Into Our Impact",
-        subtitle_detail: "The projects featured in this profile are selected highlights—distinct campaigns that reflect the breadth and depth of our capabilities. They are not the full story. Behind the scenes, PRt has led and executed dozens of additional initiatives across sectors, cities, and scales. From grassroots activations to boardroom-level strategies, our work spans the spectrum of public relations excellence. Each project, whether included here or not, carries our signature: thoughtful strategy, cultural fluency, and a relentless commitment to results.",
-        impactLabel: "Impact",
-        cta: "View Case Study",
-        summaries: [
-          { title: "Telecom Transformation", description: "From Zakho to Basra, PRt ignited nationwide conversations for Iraq’s leading telecoms. Through immersive experiences and data-driven storytelling, we connected over 20 million hearts—blending creativity, technology, and culture into one powerful voice." },
-          { title: "National Financial Vision", description: "In partnership with key national stakeholders, PRt crafted and managed the communication strategy behind one of Iraq’s most significant economic initiatives—bridging vision, trust, and public engagement." },
-          { title: "Empowering Innovators", description: "From BYD’s bold brand presence to Iraq Mall’s entertainment evolution, PRt celebrates innovation and creativity across industries. Through storytelling and strategic engagement, we amplify the voices shaping Iraq’s modern culture and commerce." },
-        ],
-        items: [
-            { 
-              title: "Yalla Formula", 
-              overview: "A nationwide telecom activation that fused the thrill of Formula One with strategic communications mastery—uniting physical engagement, digital interaction, and narrative precision. This campaign transformed a recharge incentive into a sweeping cultural moment.", 
-              approach: [
-                "PRt led a 360-degree public relations campaign, seamlessly integrating on-ground experiences with a full spectrum communications strategy.",
-                "Developed an interactive mobile racing game linked to recharge behavior, rewarding participation with meaningful digital incentives.",
-                "Executed immersive on-ground activations in key governorates, delivering unified messaging through design, scripting, and spatial experience.",
-                "Mobilized top-tier influencers to narrate the campaign journey in real time, generating content that resonated across platforms and demographics.",
-                "Launched a synchronized social media strategy, supported by live coverage, creative assets, and audience engagement tactics.",
-                "Oversaw end-to-end monitoring and reporting, sentiment analysis, and performance optimization to guide message alignment and amplification.",
-                "Deployed trained crowd management professionals to ensure seamless, elevated public experience and brand interaction at each event site."
-              ],
-              impact: [
-                "Engaged over 200,000 participants across the campaign’s digital and physical touchpoints.",
-                "Generated millions of organic impressions, driven by influencer storytelling and community engagement.",
-                "Strengthened brand affinity and recharge behavior, reinforcing the client’s position as a lifestyle-driven leader in telecommunications."
-              ], 
-              image: "https://www.datocms-assets.com/134341/1745407148-pexels-tara-winstead-8386440-1.jpg?ar64=MTQxOjY1&auto=format&crop=focalpoint&fit=crop&fm=webp" 
-            },
-            { 
-              title: "Ramadan Festival", 
-              overview: "A culturally resonant campaign crafted to deepen emotional connection and reflect shared values during Iraq’s most spiritually significant month. Designed and delivered for two consecutive years, the Ramadan Festival became more than a brand activation, it became a tradition.", 
-              approach: [
-                "PRt curated a nationwide celebration that fused heritage, humanity, and storytelling.",
-                "Executed large-scale, community-centric events across Iraq, honoring the spirit of Ramadan and inviting the public into immersive, meaningful experiences.",
-                "Developed culturally rich visual content and narratives that paid tribute to Iraqi customs, traditions, and the spirit of generosity.",
-                "Activated a cohesive digital campaign that elevated stories of togetherness, creating emotional resonance across audiences and platforms."
-              ],
-              impact: [
-                "Welcomed over 25,000 attendees each year, making it one of the most visible seasonal campaigns in the market.",
-                "Significantly elevated audience engagement during Ramadan, driving participation both online and on-ground.",
-                "Deepened the client’s position as a brand of empathy and cultural relevance, strengthening trust and emotional loyalty across communities."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg" 
-            },
-            { 
-              title: "AI for Influencers", 
-              overview: "An innovative event introducing cutting-edge AI technology to top influencers, enhancing their content creation capabilities and digital impact.",
-              approach: [
-                "Exclusive hands-on workshops for leading Iraqi influencers.",
-                "Demonstrations of AI tools designed for content innovation.",
-                "High-impact social media campaigns documenting influencer experiences."
-              ],
-              impact: [
-                "Elevated influencers' digital capabilities and content quality.",
-                "Increased brand visibility through authentic influencer-driven content.",
-                "Positioned PRt and its client as pioneers in technological integration."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop" 
-            },
-            { 
-              title: "LAILA Campaign", 
-              overview: "A groundbreaking PR campaign introducing LAILA, Iraq’s first-ever AI-powered telecom assistant, accessible through various digital platforms including WhatsApp, Messenger, and the client's website.",
-              approach: [
-                "Produced humorous yet insightful digital content featuring prominent influencers to capture public attention.",
-                "Strategically leveraged social media platforms to showcase LAILA’s ease of use and responsiveness.",
-                "Managed proactive PR communications highlighting technological innovation and customer experience."
-              ],
-              impact: [
-                "Successfully established LAILA as a recognizable and trusted digital assistant.",
-                "Boosted digital engagement significantly, driving adoption of the client’s digital customer services.",
-                "Reinforced client’s leadership position in tech-driven customer care solutions."
-              ], 
-              image: "https://media.licdn.com/dms/image/v2/D4D22AQFi21LfZL70Jg/feedshare-shrink_800/feedshare-shrink_800/0/1731783981800?e=2147483647&v=beta&t=VbN6o84xPaaLyyt2McSVKwNnf-xggctsbY2FQLTedRY" 
-            },
-            { 
-              title: "TechWave Forums", 
-              overview: "A vibrant, youth-oriented technology event held in collaboration with academic institutions, spotlighting emerging tech trends and inspiring the next generation of Iraqi tech innovators and entrepreneurs.",
-              approach: [
-                "Organized interactive sessions, panel discussions, and live demonstrations highlighting cutting-edge technologies.",
-                "Facilitated collaborations between academia, tech companies, and entrepreneurial communities.",
-                "Executed dynamic PR and digital strategies to attract widespread attendance and media attention."
-              ],
-              impact: [
-                "Successfully engaged thousands of participants, significantly raising awareness about tech-driven opportunities.",
-                "Strengthened community and stakeholder relationships, positioning clients as leaders in tech education and innovation.",
-                "Generated strong media coverage and social buzz, positively impacting client brand visibility among youth and educators."
-              ], 
-              image: "https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=3540&auto=format=fit&crop" 
-            },
-             { 
-              title: "Asiacell Ramadan Festival", 
-              overview: "A vibrant evening of culture, creativity, and community, the festival brought thousands together under the lights of Baghdad for music, games, art, and shared moments. More than an event—it was a living expression of brand empathy, crafted with care across every detail and every face.",
-              impact: [
-                "Fostered significant community engagement and brand loyalty.",
-                "Generated widespread positive media coverage and social media buzz.",
-                "Reinforced the client's commitment to cultural and community initiatives."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop"
-            },
-            { 
-              title: "A Story Unfinished", 
-              overview: "A voice silenced too soon, but never unheard—this tribute honors Buraq Yassin’s dream through a final recording that echoes with soul and sincerity. Produced with deep respect, it stands as both a farewell and a promise: that true passion leaves a lasting note.",
-              impact: [
-                "Created a touching and respectful tribute that resonated deeply with the audience.",
-                "Generated a wave of heartfelt support and engagement online.",
-                "Honored the artist's legacy and provided a platform for their final work."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg"
-            }
-        ],
-    },
-    valueStats: [
-        { value: 3.5, decimals: 1, prefix: "$", suffix: "M+", label: "Managed in Client Communications" },
-        { value: 30, suffix: "+", label: "Staff Members Across Region" },
-        { value: 300, suffix: "+", label: "Promoters Deployed Nationwide" },
-        { value: 2, label: "Strategic Offices & Warehouse" },
-    ],
-    clients: {
-      title: "Clients & Collaborations",
-      subtitle: "Our journey includes partnerships with industry leaders, renowned global organizations, and influential local enterprises. They entrust us with their stories—allowing us to amplify their voices and expand their reach.",
-      list: ["Startup Grind", "USAID", "Chemonics", "KAPITA", "EARTHLINK", "GIZ", "Asiacell", "Tafa3ul", "1001", "The Station", "Iraqi Private Banks League", "Central Bank of Iraq"],
-    },
-    careers: {
-      title: "Join Our Team",
-      subtitle: "We are cultural architects, shaping narratives that define tomorrow. If you thrive on innovation, diversity, and creating lasting impact, we want to hear from you.",
-      culture: {
-        title: "Why Work at PRt?",
-        text: "We are more than an agency; we are a community of storytellers, strategists, and creators. Our strength stems from our diverse perspectives, unified by a passion for crafting narratives that matter. We challenge convention, find poetry in the mundane, and believe that our actions define our legacy.",
-        perks: {
-          title: "Perks & Benefits",
-          items: ["Competitive Salaries", "Professional Development", "Collaborative Environment", "Meaningful Work"],
+        team: {
+          title: "Meet the Architects of Influence",
+          subtitle: "The driving force behind our creative strategies and impactful narratives. Our team's diverse expertise and shared passion for storytelling are the cornerstones of our success.",
+          members: [
+            { name: "Nour Al-Hashimi", title: "Chief Executive Officer", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1288&auto=format&fit=crop" },
+            { name: "Omar Khalil", title: "Creative Director", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1287&auto=format&fit=crop" },
+            { name: "Zaid Al-Ghanam", title: "Social Impact Projects Manager", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop" },
+            { name: "Aya Al-Nuaimi", title: "Head of Internal Communications", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop" },
+            { name: "Tariq Al-Janabi", title: "Media Relations Manager", image: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop" },
+            { name: "Layla Hassan", title: "Crisis Communications Lead", image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop" },
+            { name: "Ali Mohannad Khaled", title: "Logistics Officer", image: "https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=1287&auto=format&fit=crop" },
+            { name: "Fatima Al-Amir", title: "Project Manager", image: "https://images.unsplash.com/photo-1554415511-53a4f85412a8?q=80&w=1470&auto=format&fit=crop" }
+          ]
         }
+    },
+    technology: {
+      title: "Technology & Innovation",
+      subtitle: "Harnessing the power of data and AI to craft narratives that are not just told, but felt. We engineer influence through cutting-edge technology.",
+      feature1: {
+        title: "Data-Driven Narratives",
+        text: "We move beyond intuition. Our strategies are built on a foundation of robust data analytics, market research, and sentiment analysis. By understanding audience behaviors and cultural nuances at a granular level, we ensure every message is precisely targeted and powerfully resonant."
       },
-      openings: {
-        title: "Current Openings",
-        cta: "Apply Now",
-        jobs: [
-          { title: "Public Relations Specialist", location: "Baghdad", type: "Full-time" },
-          { title: "Digital Content Creator", location: "Baghdad", type: "Full-time" },
-          { title: "Social Media Manager", location: "Suli", type: "Full-time" },
-          { title: "Events Coordinator", location: "Baghdad", type: "Contract" },
-        ]
+      feature2: {
+        title: "AI-Powered Insights",
+        text: "Leveraging artificial intelligence, we unlock predictive insights and automate complex media monitoring. This allows us to anticipate trends, identify opportunities, and react to crises with unmatched speed and intelligence, keeping our clients always one step ahead."
       }
     },
+    process: {
+        title: "Our Strategic Process",
+        subtitle: "We blend methodical precision with creative intuition. Our process is designed to uncover deep insights and transform them into culturally resonant, impactful narratives.",
+        steps: [
+            { title: "Discovery & Strategy", description: "We begin by immersing ourselves in your world. Through deep listening, market analysis, and collaborative workshops, we define clear objectives and map out a strategic path to success.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>` },
+            { title: "Narrative Crafting", description: "This is where insight becomes story. Our team of writers, strategists, and creatives collaborate to build a compelling core narrative that is authentic to your brand and captivating to your audience.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>` },
+            { title: "Multi-Channel Activation", description: "A great story deserves a grand stage. We deploy your narrative across a carefully selected mix of channels—from media relations and digital platforms to immersive events—ensuring maximum reach and resonance.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>` },
+            { title: "Impact Analysis", description: "Our work doesn't end at launch. We meticulously track performance, measure sentiment, and analyze data to provide clear reports on ROI and gather insights for future optimization and growth.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20V16"></path></svg>` }
+        ]
+    },
+    insights: {
+        title: "Insights From Our Experts",
+        subtitle: "Meet the strategists, storytellers, and innovators shaping the future of communication in our region.",
+        items: [
+            { 
+              topic: "How can public relations leverage AI and Data Analytics?", 
+              expertName: "Zaid Al-Ghanam", 
+              expertTitle: "Social Impact Projects Manager",
+              expertImage: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "Internal communication strategies that build employee loyalty.", 
+              expertName: "Aya Al-Nuaimi", 
+              expertTitle: "Head of Internal Communications",
+              expertImage: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "How does PR build a bridge between the brand and society?", 
+              expertName: "Tariq Al-Janabi", 
+              expertTitle: "Media Relations Manager",
+              expertImage: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop"
+            },
+            { 
+              topic: "Navigating crises: The pivotal role of PR in reputation management.", 
+              expertName: "Layla Hassan", 
+              expertTitle: "Crisis Communications Lead",
+              expertImage: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop"
+            }
+        ]
+    },
+    testimonials: {
+        title: "What Our Clients Say",
+        subtitle: "Partnerships built on trust, strategy, and exceptional results. Here's what some of our clients have to say about their journey with PRt.",
+        items: [
+            { quote: "PRt didn't just run a campaign; they started a movement. Their understanding of the Iraqi cultural landscape is unparalleled. They are true partners in every sense of the word.", author: "Ahmed Al-Sudani", title: "CEO, Tech Innovators Inc." },
+            { quote: "The team's strategic foresight and flawless execution turned our annual festival into a nationally recognized event. Their passion and dedication are evident in every detail.", author: "Fatima Al-Jubori", title: "Director, Baghdad Arts & Culture Festival" },
+            { quote: "In a critical moment for our brand, PRt provided the guidance and crisis management we desperately needed. Their calm, strategic approach protected our reputation and built stronger trust with our stakeholders.", author: "Yusuf Al-Maliki", title: "Managing Director, Basra Logistics" },
+        ]
+    },
+    services: {
+      title: "Our Services",
+      items: [
+          {
+              title: "Public Relations",
+              description: "Crafting narratives that build reputation and influence.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+              items: ["Media Relations", "Crisis Management", "Corporate Communications", "Reputation Management"]
+          },
+          {
+              title: "Digital Strategy",
+              description: "Engaging audiences in the digital landscape with data-driven strategies.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+              items: ["Social Media Management", "Content Creation", "Influencer Marketing", "SEO & SEM"]
+          },
+          {
+              title: "Event Management",
+              description: "Creating memorable experiences that connect brands with their audience.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`,
+              items: ["Corporate Events", "Product Launches", "Press Conferences", "Cultural Festivals"]
+          },
+      ]
+    },
+    projects: {
+        title: "Our Work",
+        subtitle: "Stories we've shaped, impacts we've made.",
+        subtitle_detail: "A selection of projects that showcase our strategic approach and creative execution. Click and drag the sphere to explore our portfolio.",
+        approachLabel: "Our Approach",
+        impactLabel: "Impact",
+        cta: "Learn More",
+        cta_show_more: "Show Details",
+        cta_show_less: "Hide Details",
+        items: [
+            {
+                title: "Tech Innovators Launch",
+                image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1470&auto=format&fit=crop",
+                overview: "A comprehensive campaign to launch a new tech product in the Iraqi market, establishing it as a market leader from day one.",
+                approach: ["In-depth market research to identify key demographics.", "Strategic influencer outreach program.", "Multi-platform media blitz across digital and traditional channels."],
+                impact: ["Achieved 200% of sales target in the first quarter.", "Generated over 50 million media impressions.", "Secured 'Product of the Year' award from a leading tech publication."]
+            },
+            {
+                title: "Baghdad Arts Festival",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop",
+                overview: "A social impact initiative to promote youth empowerment and cultural exchange through a city-wide arts festival.",
+                approach: ["Community engagement and partnership with local artists.", "A targeted digital campaign to drive attendance and participation.", "High-profile media relations to secure national coverage."],
+                impact: ["Engaged over 10,000 young people across 5 cities.", "Secured long-term funding from international cultural partners.", "Increased tourism to the region by 15% during the festival period."]
+            },
+            { title: "National Telecom Rebrand", image: "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?q=80&w=1374&auto=format&fit=crop", overview: "Revitalizing a major telecom brand to reconnect with a younger audience and modernize its image.", impact: ["25% increase in brand sentiment among the 18-25 demographic.", "Successful launch of a new youth-focused mobile plan."] },
+            { title: "Horizon Bank CSR Initiative", image: "https://images.unsplash.com/photo-1560439546-17b79d71a17c?q=80&w=1374&auto=format&fit=crop", overview: "Developing and promoting a nationwide financial literacy program for small business owners.", impact: ["Empowered over 500 entrepreneurs with essential financial skills.", "Received a national award for Corporate Social Responsibility."] },
+            { title: "Gulf Industries Expansion", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop", overview: "A strategic communications plan to support the company's expansion into new regional markets.", impact: ["Successfully established a strong brand presence in two new countries.", "Facilitated key partnerships with local distributors and stakeholders."] },
+            { title: "Basra Logistics Reputation Management", image: "https://images.unsplash.com/photo-1577563908411-5ab7254a4f35?q=80&w=1470&auto=format&fit=crop", overview: "A proactive crisis communication and reputation management strategy to navigate complex industry challenges.", impact: ["Maintained a positive public image during a period of market volatility.", "Strengthened trust and transparency with clients and investors."] },
+            { title: "Eco-Iraq Sustainability Campaign", image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=1470&auto=format&fit=crop", overview: "Raising awareness about environmental issues and promoting sustainable practices among the public.", impact: ["Reached over 2 million people through an integrated media campaign.", "Led to a measurable increase in recycling rates in target communities."] }
+        ]
+    },
+    valueStats: [
+        { value: 15, suffix: 'M+', label: "Media Impressions" },
+        { value: 98, suffix: '%', label: "Client Satisfaction" },
+        { value: 25, label: "Successful Campaigns" },
+        { value: 8, label: "Industry Awards" }
+    ],
+    clients: {
+        title: "Our Partners",
+        subtitle: "We are proud to collaborate with leading brands and organizations.",
+        list: ["Tech Innovators Inc.", "Baghdad Arts & Culture Festival", "Gulf Industries", "Basra Logistics", "National Telecom", "Horizon Bank", "Eco-Iraq"]
+    },
+    careers: {
+        title: "Join Our Team",
+        subtitle: "Shape the future of communication with us. We're looking for passionate storytellers and strategists.",
+        culture: {
+            title: "Our Culture",
+            text: "We foster a collaborative, innovative, and inclusive environment where every voice is heard and every idea matters. We believe in growth, both for our clients and our team.",
+            perks: {
+                title: "What We Offer",
+                items: ["Competitive Salary", "Health Insurance", "Professional Development", "Flexible Work Hours", "Creative Workspace", "Team Events"]
+            }
+        },
+        openings: {
+            title: "Current Openings",
+            cta: "Apply Now",
+            jobs: [
+                { title: "PR Specialist", location: "Baghdad", type: "Full-time" },
+                { title: "Digital Marketing Manager", location: "Sulaimaniyah", type: "Full-time" },
+                { title: "Graphic Designer", location: "Remote", type: "Contract" }
+            ]
+        }
+    },
     contact: {
-        title: "Let Your Story Begin With Us",
-        subtitle: "Great narratives don't simply happen; they are meticulously crafted. Your story deserves to be told powerfully. Together, let's write the next compelling chapter.",
-        details: { title: "Contact Information", address: "Iraq-Baghdad", email: "info@prt.agency", phone: "+964 772 211 1118" },
-        form: { 
-            name: "Your Name", 
-            email: "Your Email", 
-            message: "Your Message", 
-            submit: "Send Message", 
+        title: "Get in Touch",
+        subtitle: "Have a story to tell? We're here to listen. Let's create something impactful together.",
+        details: {
+            title: "Contact Details",
+            address: "123 Al-Mansour St, Baghdad, Iraq",
+            email: "hello@prt.iq",
+            phone: "+964 780 123 4567"
+        },
+        form: {
+            name: "Your Name",
+            email: "Your Email",
+            message: "Your Message",
+            submit: "Send Message",
             sending: "Sending...",
-            success: { title: "Thank You!", message: "Your message has been sent successfully. We'll be in touch soon." }
-         },
+            success: {
+                title: "Thank You!",
+                message: "Your message has been sent successfully. We will get back to you shortly."
+            }
+        }
     },
     footer: {
-        subtitle: "Mastering the Art of Public Relations",
-        email: "info@prt.agency",
-        copyright: "© {year} PRt Agency. All Rights Reserved.",
+        subtitle: "Narratives that Influence Generations.",
+        email: "hello@prt.iq",
+        copyright: "© {year} PRt Agency. All Rights Reserved."
     }
-  },
-  ar: {
+};
+
+const arTranslations: Translations = {
     navLinks: [
       { name: 'الرئيسية', id: 'home' },
-      { name: 'حولنا', id: 'about' },
+      { name: 'من نحن', id: 'about' },
       { name: 'خدماتنا', id: 'services' },
       { name: 'مشاريعنا', id: 'projects' },
       { name: 'وظائف', id: 'careers' },
-      { name: 'تواصل معنا', id: 'contact' },
+      { name: 'اتصل بنا', id: 'contact' },
     ],
     hero: {
-        title: { part1: 'روايات', highlighted: 'تُلهم', part2: 'الأجيال' },
-        subtitle: 'نحن نحوّل التواصل اليومي إلى قصص قوية تشكل المجتمع وتبني الثقة.',
+        title: { part1: 'سرديات', highlighted: 'تؤثر', part2: 'في الأجيال' },
+        subtitle: 'نحن نحول التواصل اليومي إلى قصص قوية تشكل المجتمع وتبني الثقة.',
         button: 'اروِ قصتك',
     },
     about: {
         title: "من نحن",
         aboutText: [
-          "\"عند تقاطع التراث والابتكار، تحول PRt العلامات التجارية إلى روايات قوية تشكل الثقافة.\"",
-          "تأسست وكالة PRt في عام 2022، وهي أكثر من مجرد وكالة علاقات عامة، نحن مهندسون ثقافيون. متجذرون بعمق في التقاليد العراقية ولكن بوعي عالمي، نصنع روايات تشرك العقول وتؤثر في القلوب وتدفع التغيير الدائم عبر مشهد الأعمال المتطور في العراق.",
-          "مع مكتبين استراتيجيين (بغداد والسليمانية)، يمتد نطاق عملنا ليشمل جميع أنحاء البلاد. نحن ندير استراتيجيًا محفظة اتصالات سنوية تزيد عن 3.5 مليون دولار، مستثمرة بدقة في نجاح عملائنا. يضمن فريق PRt الواسع والمتنوع تنفيذًا سلسًا وحضورًا مؤثرًا من زاخو إلى البصرة."
+          "\"عند تقاطع التراث والابتكار، تحول PRt العلامات التجارية إلى سرديات قوية تشكل الثقافة.\"",
+          "تأسست PRt في عام 2022، وهي أكثر من مجرد وكالة علاقات عامة، نحن مهندسون ثقافيون. متجذرون بعمق في التقاليد العراقية ولكن بوعي عالمي، نحن نصوغ سرديات تشرك العقول وتؤثر في القلوب وتدفع التغيير الدائم عبر مشهد الأعمال المتطور في العراق.",
+          "من خلال مكتبين استراتيجيين (بغداد والسليمانية)، يمتد وصولنا على مستوى البلاد. نحن ندير استراتيجياً محفظة اتصالات سنوية تزيد عن 3.5 مليون دولار، مستثمرة بدقة في نجاح عملائنا. يضمن فريق PRt الواسع والمتنوع التنفيذ السلس والحضور المؤثر من زاخو إلى البصرة."
         ],
-        quote: "كل قصة لديها القدرة على إعادة كتابة المستقبل. في أيدينا، تصبح الكلمات جسورًا، تربط الأحلام بالواقع، وتحول التصورات، وتغير المصائر.",
+        quote: "كل قصة لديها القدرة على إعادة كتابة المستقبل. بين أيدينا، تصبح الكلمات جسورًا، تربط الأحلام بالواقع، وتحول التصورات، وتغير المصائر.",
         mission: {
             title: "مهمتنا",
-            text: "تمكين العلامات التجارية بروايات تشعل الحوارات وتبني الثقة وتلهم العمل عبر المجتمعات."
+            text: "تمكين العلامات التجارية بسرديات تشعل المحادثات، وتبني الثقة، وتلهم العمل عبر المجتمعات."
         },
         vision: {
             title: "رؤيتنا",
-            text: "أن نكون معروفين كأبرز رواة القصص في العراق، محولين التواصل اليومي إلى روايات قوية تشكل المجتمع وتؤثر في الأجيال."
+            text: "أن نكون معترفًا بنا كأبرز راوي قصص في العراق، محولين التواصل اليومي إلى سرديات قوية تشكل المجتمع وتؤثر في الأجيال."
         },
         coreBeliefs: {
-            title: "معتقداتنا الأساسية",
+            title: "قيمنا الأساسية",
             items: [
-                { title: "النزاهة فوق كل شيء", description: "نحمي روايتك بجدية كما يفعل كتبة التاريخ." },
-                { title: "الاستثنائي من العادي", description: "نجد الشعر مخبأً في التفاصيل اليومية، صانعين قصصاً مؤثرة من لحظات الحياة العادية." },
-                { title: "إنجازات ذات معنى", description: "نقيس النجاح ليس بالحملات، بل بالتأثير الثقافي والإرث الدائم." },
-                { title: "الابتكار كعقيدة", description: "نتحدى التقاليد، ونستكشف بلا هوادة مسارات مجهولة تعيد تعريف الممكن." },
-                { title: "الفعل قبل القول", description: "التزاماتنا محفورة في الأفعال، وليست مجرد كلمات." },
-                { title: "الوحدة في التنوع", description: "قوتنا تنبع من وجهات النظر المتنوعة؛ كل صوت يثري روايتنا." },
+                { title: "النزاهة فوق كل شيء", description: "نحمي سردك بجدية كما يفعل كتبة التاريخ.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>` },
+                { title: "الاستثنائي من العادي", description: "نجد الشعر المخبأ في الأمور العادية، صانعين قصصًا آسرة من لحظات الحياة اليومية.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9 9l-7 2 5 5-1 7 6-4 6 4-1-7 5-5-7-2z"></path></svg>` },
+                { title: "إنجازات تهم", description: "نقيس النجاح ليس بالحملات، بل بالتأثير الثقافي والإرث الدائم.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>` },
+                { title: "الابتكار كعقيدة", description: "نتحدى التقاليد، مستكشفين بلا هوادة مسارات غير مألوفة تعيد تعريف الممكن.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 14h.01"></path><path d="M8.5 14h.01"></path><path d="M4.53 9.47 5.24 11"></path><path d="M19.47 9.47 18.76 11"></path><path d="m12 2-3.5 3.5"></path><path d="M12 22v-3.5"></path><path d="M9 18.5h6"></path><path d="M12 2v10c0 3.3-2.7 6-6 6h-1a6 6 0 0 1-6-6V8"></path><path d="m13 12 5-5"></path></svg>` },
+                { title: "الفعل قبل القول", description: "التزاماتنا محفورة في الأفعال، وليست مجرد كلمات تقال.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>` },
+                { title: "الوحدة في التنوع", description: "قوتنا تنبع من وجهات نظر متنوعة؛ كل صوت يثري سردنا.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6"></path><path d="M23 11h-6"></path></svg>` },
             ],
         },
-    },
-    services: {
-        title: "خبراتنا",
-        items: [
-            { title: "الاتصال الاستراتيجي والتأثير", description: "نشكل التصورات ونبني سمعة قوية من خلال وضع علامتك التجارية في قلب الحوارات المؤثرة. تضمن استراتيجياتنا أن صوتك مسموع من قبل الأشخاص الأكثر أهمية.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`, items: ["علاقات عامة متخصصة للصناعات المحددة", "القيادة الفكرية", "الشؤون العامة والدعوة", "إدارة الأزمات", "العلاقات الإعلامية", "الاتصالات الداخلية", "إدارة العلامة التجارية والسمعة"] },
-            { title: "السرد القصصي الإبداعي والرقمي", description: "في العصر الرقمي، القصص هي عملة التواصل. نصنع روايات جذابة ومتعددة المنصات تلفت الانتباه وتحفز التفاعل وتبني مجتمعات دائمة حول علامتك التجارية.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`, items: ["إنشاء المحتوى", "تطوير الحملات الإبداعية", "العلاقات العامة الرقمية ووسائل التواصل الاجتماعي", "التسويق عبر المؤثرين", "مراقبة الإعلام وإعداد التقارير", "إطلاق المنتجات والخدمات"] },
-            { title: "الفعاليات وتفعيل المجتمع", description: "نخلق تجارب لا تنسى تعيد الحياة لعلامتك التجارية. من الإطلاقات البارزة إلى البرامج المجتمعية الشعبية، نبني لحظات تواصل تعزز الولاء والدعم.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`, items: ["إنشاء وإدارة الفعاليات", "التفعيل الميداني", "المشاركة المجتمعية", "الرعايات والتأييدات", "الشراكات الاستراتيجية"] },
-            { title: "الرؤى والبحث وبناء القدرات", description: "القرارات المستندة إلى البيانات هي جوهر التواصل المؤثر. نقدم رؤى السوق والتحليلات والتدريب اللازم للتنقل في المشاهد المعقدة وتمكين فريقك من التفوق.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`, items: ["أبحاث السوق والتحليلات", "التدريب والتوجيه الإعلامي"] },
-        ],
-    },
-    projects: {
-        title: "البرهان في الممارسة",
-        subtitle: "لمحة عن تأثيرنا",
-        subtitle_detail: "المشاريع المعروضة في هذا الملف هي أبرز ما قمنا به — حملات متميزة تعكس اتساع وعمق قدراتنا. إنها ليست القصة الكاملة. خلف الكواليس، قادت PRt ونفذت العشرات من المبادرات الإضافية عبر القطاعات والمدن والمقاييس. من التفعيلات الشعبية إلى الاستراتيجيات على مستوى مجالس الإدارة، يمتد عملنا ليشمل طيف التميز في العلاقات العامة. كل مشروع، سواء تم إدراجه هنا أم لا، يحمل توقيعنا: استراتيجية مدروسة، طلاقة ثقافية، والتزام لا هوادة فيه بالنتائج.",
-        impactLabel: "التأثير",
-        cta: "عرض دراسة الحالة",
-        summaries: [
-          { title: "تحول الاتصالات", description: "من زاخو إلى البصرة، أشعلت PRt حوارات على مستوى البلاد لشركات الاتصالات الرائدة في العراق. من خلال التجارب الغامرة والسرد القصصي القائم على البيانات، ربطنا أكثر من 20 مليون قلب - مزجنا بين الإبداع والتكنولوجيا والثقافة في صوت واحد قوي." },
-          { title: "الرؤية المالية الوطنية", description: "بالشراكة مع أصحاب المصلحة الوطنيين الرئيسيين، صاغت PRt وأدارت استراتيجية الاتصال وراء واحدة من أهم المبادرات الاقتصادية في العراق - جسر الرؤية والثقة والمشاركة العامة." },
-          { title: "تمكين المبتكرين", description: "من الحضور الجريء لعلامة BYD التجارية إلى تطور الترفيه في مول العراق، تحتفل PRt بالابتكار والإبداع عبر الصناعات. من خلال السرد القصصي والمشاركة الاستراتيجية، نضخم الأصوات التي تشكل ثقافة العراق الحديثة وتجارته." },
-        ],
-        items: [
-             { 
-              title: "يلا فورمولا", 
-              overview: "تفعيل لشركة اتصالات على مستوى البلاد دمج إثارة الفورمولا واحد مع إتقان الاتصالات الاستراتيجية - موحداً المشاركة المادية والتفاعل الرقمي والدقة السردية. حولت هذه الحملة حافز إعادة الشحن إلى لحظة ثقافية شاملة.", 
-              approach: [
-                "قادت PRt حملة علاقات عامة بزاوية 360 درجة، دمجت بسلاسة التجارب الميدانية مع استراتيجية اتصالات كاملة الطيف.",
-                "طورت لعبة سباق سيارات تفاعلية مرتبطة بسلوك إعادة الشحن، تكافئ المشاركة بحوافز رقمية ذات معنى.",
-                "نفذت تفعيلات ميدانية غامرة في المحافظات الرئيسية، وقدمت رسائل موحدة من خلال التصميم والسيناريو والتجربة المكانية.",
-                "حشدت كبار المؤثرين لرواية رحلة الحملة في الوقت الفعلي، مما أدى إلى إنشاء محتوى يتردد صداه عبر المنصات والتركيبة السكانية.",
-                "أطلقت استراتيجية متزامنة لوسائل التواصل الاجتماعي، مدعومة بالتغطية الحية والأصول الإبداعية وتكتيكات إشراك الجمهور.",
-                "أشرفت على المراقبة وإعداد التقارير الشاملة، وتحليل المشاعر، وتحسين الأداء لتوجيه مواءمة الرسائل وتضخيمها.",
-                "نشرت محترفين مدربين في إدارة الحشود لضمان تجربة عامة سلسة وراقية وتفاعل مع العلامة التجارية في كل موقع للحدث."
-              ],
-              impact: [
-                "إشراك أكثر من 200,000 مشارك عبر نقاط الاتصال الرقمية والمادية للحملة.",
-                "توليد الملايين من الانطباعات العضوية، مدفوعة بسرد قصص المؤثرين والمشاركة المجتمعية.",
-                "عززت تقارب العلامة التجارية وسلوك إعادة الشحن، مما عزز مكانة العميل كشركة رائدة في مجال الاتصالات تعتمد على أسلوب الحياة."
-              ], 
-              image: "https://www.datocms-assets.com/134341/1745407148-pexels-tara-winstead-8386440-1.jpg?ar64=MTQxOjY1&auto=format&crop=focalpoint&fit=crop&fm=webp" 
-            },
-            { 
-              title: "مهرجان رمضان", 
-              overview: "حملة ذات صدى ثقافي تم تصميمها لتعميق الارتباط العاطفي وتعكس القيم المشتركة خلال أكثر شهور العراق أهمية روحية. تم تصميمها وتقديمها لمدة عامين متتاليين، وأصبح مهرجان رمضان أكثر من مجرد تفعيل للعلامة التجارية، بل أصبح تقليدًا.", 
-              approach: [
-                "نظمت PRt احتفالًا على مستوى البلاد دمج بين التراث والإنسانية والسرد القصصي.",
-                "نفذت فعاليات واسعة النطاق تتمحور حول المجتمع في جميع أنحاء العراق، تكريمًا لروح رمضان ودعوة الجمهور إلى تجارب غامرة وذات مغزى.",
-                "طورت محتوى مرئيًا وروايات غنية ثقافيًا تشيد بالعادات والتقاليد العراقية وروح الكرم.",
-                "فعلت حملة رقمية متماسكة رفعت من شأن قصص التآزر، مما خلق صدى عاطفيًا عبر الجماهير والمنصات."
-              ],
-              impact: [
-                "استقبال أكثر من 25,000 حاضر كل عام، مما يجعلها واحدة من أبرز الحملات الموسمية في السوق.",
-                "رفع تفاعل الجمهور بشكل كبير خلال رمضان، مما أدى إلى المشاركة عبر الإنترنت وعلى أرض الواقع.",
-                "عمقت مكانة العميل كعلامة تجارية للتعاطف والأهمية الثقافية، مما عزز الثقة والولاء العاطفي عبر المجتمعات."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg" 
-            },
-            { 
-              title: "الذكاء الاصطناعي للمؤثرين", 
-              overview: "حدث مبتكر يقدم تكنولوجيا الذكاء الاصطناعي المتطورة لكبار المؤثرين، مما يعزز قدراتهم في إنشاء المحتوى وتأثيرهم الرقمي.",
-              approach: [
-                "ورش عمل عملية حصرية لكبار المؤثرين العراقيين.",
-                "عروض لأدوات الذكاء الاصطناعي المصممة لابتكار المحتوى.",
-                "حملات وسائل تواصل اجتماعي عالية التأثير توثق تجارب المؤثرين."
-              ],
-              impact: [
-                "رفع القدرات الرقمية للمؤثرين وجودة المحتوى.",
-                "زيادة رؤية العلامة التجارية من خلال محتوى أصيل يقوده المؤثرون.",
-                "ترسيخ مكانة PRt وعملائها كرواد في التكامل التكنولوجي."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop" 
-            },
-            { 
-              title: "حملة ليلى", 
-              overview: "حملة علاقات عامة رائدة تقدم ليلى، أول مساعد اتصالات مدعوم بالذكاء الاصطناعي في العراق، متاح عبر منصات رقمية مختلفة بما في ذلك واتساب، ماسنجر، وموقع العميل.",
-              approach: [
-                "أنتجت محتوى رقميًا فكاهيًا ولكنه ثاقب يضم مؤثرين بارزين لجذب انتباه الجمهور.",
-                "استفادت بشكل استراتيجي من منصات وسائل التواصل الاجتماعي لعرض سهولة استخدام ليلى واستجابتها.",
-                "أدارت اتصالات علاقات عامة استباقية تسلط الضوء على الابتكار التكنولوجي وتجربة العملاء."
-              ],
-              impact: [
-                "نجحت في ترسيخ ليلى كمساعد رقمي معترف به وموثوق.",
-                "عززت التفاعل الرقمي بشكل كبير، مما أدى إلى اعتماد خدمات العملاء الرقمية للعميل.",
-                "عززت مكانة العميل الرائدة في حلول خدمة العملاء القائمة على التكنولوجيا."
-              ], 
-              image: "https://media.licdn.com/dms/image/v2/D4D22AQFi21LfZL70Jg/feedshare-shrink_800/feedshare-shrink_800/0/1731783981800?e=2147483647&v=beta&t=VbN6o84xPaaLyyt2McSVKwNnf-xggctsbY2FQLTedRY" 
-            },
-            { 
-              title: "منتديات TechWave", 
-              overview: "حدث تكنولوجي نابض بالحياة وموجه للشباب، أقيم بالتعاون مع المؤسسات الأكاديمية، يسلط الضوء على الاتجاهات التكنولوجية الناشئة ويلهم الجيل القادم من المبتكرين ورجال الأعمال التقنيين العراقيين.",
-              approach: [
-                "نظمت جلسات تفاعلية وحلقات نقاش وعروض حية تسلط الضوء على التقنيات المتطورة.",
-                "سهلت التعاون بين الأوساط الأكاديمية وشركات التكنولوجيا ومجتمعات ريادة الأعمال.",
-                "نفذت استراتيجيات علاقات عامة ورقمية ديناميكية لجذب حضور واسع واهتمام إعلامي."
-              ],
-              impact: [
-                "نجحت في إشراك آلاف المشاركين، مما زاد الوعي بشكل كبير بالفرص التي تعتمد على التكنولوجيا.",
-                "عززت العلاقات مع المجتمع وأصحاب المصلحة، مما وضع العملاء كقادة في التعليم التكنولوجي والابتكار.",
-                "ولدت تغطية إعلامية قوية وضجة اجتماعية، مما أثر بشكل إيجابي على رؤية علامة العميل التجارية بين الشباب والمعلمين."
-              ], 
-              image: "https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=3540&auto=format=fit&crop" 
-            },
-            { 
-              title: "مهرجان آسياسيل الرمضاني", 
-              overview: "أمسية نابضة بالحياة من الثقافة والإبداع والمجتمع، جمع المهرجان الآلاف تحت أضواء بغداد للموسيقى والألعاب والفن واللحظات المشتركة. أكثر من مجرد حدث - لقد كان تعبيرًا حيًا عن تعاطف العلامة التجارية، تم إعداده بعناية في كل التفاصيل وكل وجه.",
-              impact: [
-                "عززت مشاركة مجتمعية كبيرة وولاء للعلامة التجارية.",
-                "ولدت تغطية إعلامية إيجابية واسعة النطاق وضجة على وسائل التواصل الاجتماعي.",
-                "عززت التزام العميل بالمبادرات الثقافية والمجتمعية."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop"
-            },
-            { 
-              title: "قصة لم تكتمل", 
-              overview: "صوت أُسكت قبل الأوان، لكنه لم يُسمع أبدًا - هذا التكريم يكرم حلم براق ياسين من خلال تسجيل نهائي يتردد صداه بالروح والصدق. تم إنتاجه باحترام عميق، وهو بمثابة وداع ووعد: أن الشغف الحقيقي يترك بصمة دائمة.",
-              impact: [
-                "خلق تكريمًا مؤثرًا ومحترمًا تردد صداه بعمق لدى الجمهور.",
-                "ولد موجة من الدعم والمشاركة الصادقة عبر الإنترنت.",
-                "كرم إرث الفنان وقدم منصة لعمله الأخير."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg"
-            }
-        ],
-    },
-    valueStats: [
-        { value: 3.5, decimals: 1, prefix: "$", suffix: "+M", label: "تدار في اتصالات العملاء" },
-        { value: 30, suffix: "+", label: "موظفًا في جميع أنحاء المنطقة" },
-        { value: 300, suffix: "+", label: "مروجًا ميدانيًا منتشرين" },
-        { value: 2, label: "مكتب استراتيجي ومستودع" },
-    ],
-    clients: {
-      title: "العملاء والتعاونات",
-      subtitle: "تشمل رحلتنا شراكات مع قادة الصناعة والمنظمات العالمية الشهيرة والشركات المحلية المؤثرة. يثقون بنا في قصصهم - مما يسمح لنا بتضخيم أصواتهم وتوسيع نطاق وصولهم.",
-      list: ["ستارت أب گرايند", "الوكالة الأمريكية للتنمية الدولية", "كيمونكس", "كابيتا", "ايرثلنك", "GIZ", "آسياسيل", "تفاعل", "1001", "المحطة", "رابطة المصارف الخاصة العراقية", "البنك المركزي العراقي"],
-    },
-    careers: {
-      title: "انضم إلى فريقنا",
-      subtitle: "نحن مهندسون ثقافيون، نشكل الروايات التي تحدد الغد. إذا كنت تزدهر على الابتكار والتنوع وخلق تأثير دائم، فنحن نرغب في الاستماع إليك.",
-      culture: {
-        title: "لماذا تعمل في PRt؟",
-        text: "نحن أكثر من مجرد وكالة؛ نحن مجتمع من رواة القصص والاستراتيجيين والمبدعين. قوتنا تنبع من وجهات نظرنا المتنوعة، التي يوحدها شغف لصياغة روايات مهمة. نحن نتحدى التقاليد، ونجد الشعر في الأمور العادية، ونؤمن بأن أفعالنا تحدد إرثنا.",
-        perks: {
-          title: "المزايا والفوائد",
-          items: ["رواتب تنافسية", "التطوير المهني", "بيئة تعاونية", "عمل هادف"],
+        team: {
+          title: "تعرف على مهندسي التأثير",
+          subtitle: "القوة الدافعة وراء استراتيجياتنا الإبداعية وسردياتنا المؤثرة. خبرة فريقنا المتنوعة وشغفهم المشترك برواية القصص هما حجر الزاوية في نجاحنا.",
+          members: [
+            { name: "نور الهاشمي", title: "الرئيس التنفيذي", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1288&auto=format&fit=crop" },
+            { name: "عمر خليل", title: "المدير الإبداعي", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1287&auto=format&fit=crop" },
+            { name: "زيد الغنام", title: "مدير مشاريع التأثير الاجتماعي", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop" },
+            { name: "آية النعيمي", title: "رئيسة الاتصالات الداخلية", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop" },
+            { name: "طارق الجنابي", title: "مدير العلاقات الإعلامية", image: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop" },
+            { name: "ليلى حسن", title: "قائدة اتصالات الأزمات", image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop" },
+            { name: "علي مهند خالد", title: "مسؤول اللوجستيات", image: "https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=1287&auto=format&fit=crop" },
+            { name: "فاطمة الأمير", title: "مديرة المشاريع", image: "https://images.unsplash.com/photo-1554415511-53a4f85412a8?q=80&w=1470&auto=format&fit=crop" }
+          ]
         }
+    },
+    technology: {
+      title: "التكنولوجيا والابتكار",
+      subtitle: "تسخير قوة البيانات والذكاء الاصطناعي لصياغة سرديات لا تروى فحسب، بل تُشعر بها. نحن نهندس التأثير من خلال التكنولوجيا المتطورة.",
+      feature1: {
+        title: "سرديات قائمة على البيانات",
+        text: "نتجاوز الحدس. استراتيجياتنا مبنية على أساس من تحليلات البيانات القوية، وأبحاث السوق، وتحليل المشاعر. من خلال فهم سلوكيات الجمهور والفروق الثقافية الدقيقة على مستوى تفصيلي، نضمن أن كل رسالة مستهدفة بدقة وقوية الصدى."
       },
-      openings: {
-        title: "الشواغر الحالية",
-        cta: "قدم الآن",
-        jobs: [
-          { title: "أخصائي علاقات عامة", location: "بغداد", type: "دوام كامل" },
-          { title: "صانع محتوى رقمي", location: "بغداد", type: "دوام كامل" },
-          { title: "مدير وسائل التواصل الاجتماعي", location: "السليمانية", type: "دوام كامل" },
-          { title: "منسق فعاليات", location: "بغداد", type: "عقد" },
-        ]
+      feature2: {
+        title: "رؤى مدعومة بالذكاء الاصطناعي",
+        text: "بالاستفادة من الذكاء الاصطناعي، نكشف عن رؤى تنبؤية ونقوم بأتمتة مراقبة وسائل الإعلام المعقدة. هذا يسمح لنا بتوقع الاتجاهات، وتحديد الفرص، والاستجابة للأزمات بسرعة وذكاء لا مثيل لهما، مما يبقي عملاءنا دائمًا متقدمين بخطوة."
       }
     },
+    process: {
+        title: "عمليتنا الاستراتيجية",
+        subtitle: "نمزج الدقة المنهجية بالحدس الإبداعي. تم تصميم عمليتنا للكشف عن رؤى عميقة وتحويلها إلى سرديات مؤثرة وذات صدى ثقافي.",
+        steps: [
+            { title: "الاكتشاف والاستراتيجية", description: "نبدأ بالانغماس في عالمك. من خلال الاستماع العميق، وتحليل السوق، وورش العمل التعاونية، نحدد أهدافًا واضحة ونرسم مسارًا استراتيجيًا للنجاح.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>` },
+            { title: "صياغة السرد", description: "هنا تتحول الرؤية إلى قصة. يتعاون فريقنا من الكتاب والاستراتيجيين والمبدعين لبناء سرد أساسي مقنع يكون أصيلاً لعلامتك التجارية وجذابًا لجمهورك.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>` },
+            { title: "التفعيل متعدد القنوات", description: "القصة العظيمة تستحق مسرحًا كبيرًا. ننشر سردك عبر مزيج مختار بعناية من القنوات - من العلاقات الإعلامية والمنصات الرقمية إلى الفعاليات الغامرة - مما يضمن أقصى وصول وصدى.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>` },
+            { title: "تحليل الأثر", description: "عملنا لا ينتهي عند الإطلاق. نتتبع الأداء بدقة، ونقيس المشاعر، ونحلل البيانات لتقديم تقارير واضحة عن عائد الاستثمار وجمع رؤى للتحسين والنمو المستقبلي.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20V16"></path></svg>` }
+        ]
+    },
+    insights: {
+        title: "رؤى من خبرائنا",
+        subtitle: "تعرف على الاستراتيجيين، ورواة القصص، والمبتكرين الذين يشكلون مستقبل التواصل في منطقتنا.",
+        items: [
+            { 
+              topic: "كيف يمكن للعلاقات العامة الاستفادة من الذكاء الاصطناعي وتحليلات البيانات؟", 
+              expertName: "زيد الغنام", 
+              expertTitle: "مدير مشاريع التأثير الاجتماعي",
+              expertImage: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "استراتيجيات الاتصال الداخلي التي تبني ولاء الموظفين.", 
+              expertName: "آية النعيمي", 
+              expertTitle: "رئيسة الاتصالات الداخلية",
+              expertImage: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "كيف تبني العلاقات العامة جسرًا بين العلامة التجارية والمجتمع؟", 
+              expertName: "طارق الجنابي", 
+              expertTitle: "مدير العلاقات الإعلامية",
+              expertImage: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop"
+            },
+            { 
+              topic: "إدارة الأزمات: الدور المحوري للعلاقات العامة في إدارة السمعة.", 
+              expertName: "ليلى حسن", 
+              expertTitle: "قائدة اتصالات الأزمات",
+              expertImage: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop"
+            }
+        ]
+    },
+    testimonials: {
+        title: "ماذا يقول عملاؤنا",
+        subtitle: "شراكات مبنية على الثقة والاستراتيجية والنتائج الاستثنائية. إليك ما يقوله بعض عملائنا عن رحلتهم مع PRt.",
+        items: [
+            { quote: "PRt لم تقم بحملة فقط؛ بل بدأت حركة. فهمهم للمشهد الثقافي العراقي لا مثيل له. هم شركاء حقيقيون بكل معنى الكلمة.", author: "أحمد السوداني", title: "الرئيس التنفيذي، Tech Innovators Inc." },
+            { quote: "البصيرة الاستراتيجية للفريق والتنفيذ الخالي من العيوب حولا مهرجاننا السنوي إلى حدث معترف به وطنياً. شغفهم وتفانيهم واضحان في كل التفاصيل.", author: "فاطمة الجبوري", title: "مديرة، مهرجان بغداد للفنون والثقافة" },
+            { quote: "في لحظة حرجة لعلامتنا التجارية، قدمت PRt التوجيه وإدارة الأزمات التي كنا في أمس الحاجة إليها. نهجهم الهادئ والاستراتيجي حمى سمعتنا وبنى ثقة أقوى مع أصحاب المصلحة.", author: "يوسف المالكي", title: "المدير الإداري، Basra Logistics" },
+        ]
+    },
+    services: {
+      title: "خدماتنا",
+      items: [
+          {
+              title: "العلاقات العامة",
+              description: "صياغة سرديات تبني السمعة وتؤثر.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+              items: ["العلاقات الإعلامية", "إدارة الأزمات", "الاتصالات المؤسسية", "إدارة السمعة"]
+          },
+          {
+              title: "الاستراتيجية الرقمية",
+              description: "إشراك الجماهير في المشهد الرقمي باستراتيجيات قائمة على البيانات.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+              items: ["إدارة وسائل التواصل الاجتماعي", "إنشاء المحتوى", "التسويق عبر المؤثرين", "تحسين محركات البحث والتسويق عبرها"]
+          },
+          {
+              title: "إدارة الفعاليات",
+              description: "خلق تجارب لا تنسى تربط العلامات التجارية بجمهورها.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`,
+              items: ["فعاليات الشركات", "إطلاق المنتجات", "مؤتمرات صحفية", "مهرجانات ثقافية"]
+          },
+      ]
+    },
+    projects: {
+        title: "أعمالنا",
+        subtitle: "قصص شكلناها، تأثيرات صنعناها.",
+        subtitle_detail: "مجموعة مختارة من المشاريع التي تعرض نهجنا الاستراتيجي وتنفيذنا الإبداعي. انقر واسحب الكرة لاستكشاف محفظتنا.",
+        approachLabel: "نهجنا",
+        impactLabel: "الأثر",
+        cta: "اعرف المزيد",
+        cta_show_more: "إظهار التفاصيل",
+        cta_show_less: "إخفاء التفاصيل",
+        items: [
+            {
+                title: "إطلاق مبتكري التكنولوجيا",
+                image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1470&auto=format&fit=crop",
+                overview: "حملة شاملة لإطلاق منتج تقني جديد في السوق العراقي، وترسيخه كرائد في السوق من اليوم الأول.",
+                approach: ["بحث سوقي متعمق لتحديد الفئات الديموغرافية الرئيسية.", "برنامج استراتيجي للتواصل مع المؤثرين.", "حملة إعلامية متعددة المنصات عبر القنوات الرقمية والتقليدية."],
+                impact: ["تحقيق 200% من هدف المبيعات في الربع الأول.", "توليد أكثر من 50 مليون انطباع إعلامي.", "الحصول على جائزة 'منتج العام' من مجلة تقنية رائدة."]
+            },
+            {
+                title: "مهرجان بغداد للفنون",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop",
+                overview: "مبادرة ذات تأثير اجتماعي لتعزيز تمكين الشباب والتبادل الثقافي من خلال مهرجان فني على مستوى المدينة.",
+                approach: ["المشاركة المجتمعية والشراكة مع الفنانين المحليين.", "حملة رقمية موجهة لزيادة الحضور والمشاركة.", "علاقات إعلامية رفيعة المستوى لتأمين تغطية وطنية."],
+                impact: ["إشراك أكثر من 10,000 شاب في 5 مدن.", "تأمين تمويل طويل الأجل من شركاء ثقافيين دوليين.", "زيادة السياحة في المنطقة بنسبة 15% خلال فترة المهرجان."]
+            },
+            { title: "إعادة إطلاق علامة الاتصالات الوطنية", image: "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?q=80&w=1374&auto=format&fit=crop", overview: "تنشيط علامة تجارية كبرى للاتصالات لإعادة التواصل مع جمهور أصغر سنًا وتحديث صورتها.", impact: ["زيادة بنسبة 25% في مشاعر العلامة التجارية بين الفئة العمرية 18-25.", "إطلاق ناجح لخطة جوال جديدة موجهة للشباب."] },
+            { title: "مبادرة المسؤولية الاجتماعية لبنك الأفق", image: "https://images.unsplash.com/photo-1560439546-17b79d71a17c?q=80&w=1374&auto=format&fit=crop", overview: "تطوير وتعزيز برنامج وطني للتثقيف المالي لأصحاب المشاريع الصغيرة.", impact: ["تمكين أكثر من 500 رائد أعمال بالمهارات المالية الأساسية.", "الحصول على جائزة وطنية للمسؤولية الاجتماعية للشركات."] },
+            { title: "توسع صناعات الخليج", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop", overview: "خطة اتصالات استراتيجية لدعم توسع الشركة في أسواق إقليمية جديدة.", impact: ["إنشاء حضور قوي للعلامة التجارية بنجاح في بلدين جديدين.", "تسهيل شراكات رئيسية مع الموزعين المحليين وأصحاب المصلحة."] },
+            { title: "إدارة سمعة بصره لوجيستكس", image: "https://images.unsplash.com/photo-1577563908411-5ab7254a4f35?q=80&w=1470&auto=format&fit=crop", overview: "استراتيجية استباقية لاتصالات الأزمات وإدارة السمعة للتغلب على تحديات الصناعة المعقدة.", impact: ["الحفاظ على صورة عامة إيجابية خلال فترة تقلبات السوق.", "تعزيز الثقة والشفافية مع العملاء والمستثمرين."] },
+            { title: "حملة الاستدامة لـ Eco-Iraq", image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=1470&auto=format&fit=crop", overview: "زيادة الوعي بالقضايا البيئية وتشجيع الممارسات المستدامة بين الجمهور.", impact: ["الوصول إلى أكثر من 2 مليون شخص من خلال حملة إعلامية متكاملة.", "أدى إلى زيادة قابلة للقياس في معدلات إعادة التدوير في المجتمعات المستهدفة."] }
+        ]
+    },
+    valueStats: [
+        { value: 15, suffix: 'M+', label: "انطباع إعلامي" },
+        { value: 98, suffix: '%', label: "رضا العملاء" },
+        { value: 25, label: "حملة ناجحة" },
+        { value: 8, label: "جوائز صناعية" }
+    ],
+    clients: {
+        title: "شركاؤنا",
+        subtitle: "نفخر بالتعاون مع العلامات التجارية والمنظمات الرائدة.",
+        list: ["Tech Innovators Inc.", "Baghdad Arts & Culture Festival", "Gulf Industries", "Basra Logistics", "National Telecom", "Horizon Bank", "Eco-Iraq"]
+    },
+    careers: {
+        title: "انضم إلى فريقنا",
+        subtitle: "شكل مستقبل التواصل معنا. نحن نبحث عن رواة قصص واستراتيجيين شغوفين.",
+        culture: {
+            title: "ثقافتنا",
+            text: "نعزز بيئة تعاونية ومبتكرة وشاملة حيث يُسمع كل صوت وكل فكرة تهم. نؤمن بالنمو، لعملائنا ولفريقنا على حد سواء.",
+            perks: {
+                title: "ماذا نقدم",
+                items: ["راتب تنافسي", "تأمين صحي", "تطوير مهني", "ساعات عمل مرنة", "مساحة عمل إبداعية", "فعاليات الفريق"]
+            }
+        },
+        openings: {
+            title: "الوظائف الشاغرة الحالية",
+            cta: "قدم الآن",
+            jobs: [
+                { title: "أخصائي علاقات عامة", location: "بغداد", type: "دوام كامل" },
+                { title: "مدير تسويق رقمي", location: "السليمانية", type: "دوام كامل" },
+                { title: "مصمم جرافيك", location: "عن بعد", type: "عقد" }
+            ]
+        }
+    },
     contact: {
-        title: "دع قصتك تبدأ معنا",
-        subtitle: "الروايات العظيمة لا تحدث ببساطة؛ بل تُصنع بدقة. قصتك تستحق أن تُروى بقوة. معًا، دعنا نكتب الفصل التالي المثير.",
-        details: { title: "معلومات الاتصال", address: "العراق - بغداد", email: "info@prt.agency", phone: "+964 772 211 1118" },
-        form: { 
-            name: "اسمك", 
-            email: "بريدك الإلكتروني", 
-            message: "رسالتك", 
-            submit: "إرسال الرسالة", 
+        title: "تواصل معنا",
+        subtitle: "هل لديك قصة لترويها؟ نحن هنا للاستماع. دعنا نخلق شيئًا مؤثرًا معًا.",
+        details: {
+            title: "تفاصيل الاتصال",
+            address: "123 شارع المنصور، بغداد، العراق",
+            email: "hello@prt.iq",
+            phone: "+964 780 123 4567"
+        },
+        form: {
+            name: "اسمك",
+            email: "بريدك الإلكتروني",
+            message: "رسالتك",
+            submit: "إرسال الرسالة",
             sending: "جارٍ الإرسال...",
-            success: { title: "شكراً لك!", message: "تم إرسال رسالتك بنجاح. سنتواصل معك قريباً." }
-         },
+            success: {
+                title: "شكرًا لك!",
+                message: "تم إرسال رسالتك بنجاح. سنتواصل معك قريبًا."
+            }
+        }
     },
     footer: {
-        subtitle: "إتقان فن العلاقات العامة",
-        email: "info@prt.agency",
-        copyright: "© {year} وكالة PRt. جميع الحقوق محفوظة.",
+        subtitle: "سرديات تؤثر في الأجيال.",
+        email: "hello@prt.iq",
+        copyright: "© {year} وكالة PRt. جميع الحقوق محفوظة."
     }
-  },
-  ku: {
+};
+
+const kuTranslations: Translations = {
     navLinks: [
       { name: 'سەرەکی', id: 'home' },
       { name: 'دەربارەی ئێمە', id: 'about' },
       { name: 'خزمەتگوزارییەکان', id: 'services' },
       { name: 'پڕۆژەکان', id: 'projects' },
-      { name: 'کارەکان', id: 'careers' },
+      { name: 'هەلی کار', id: 'careers' },
       { name: 'پەیوەندی', id: 'contact' },
     ],
     hero: {
-        title: { part1: 'گێڕانەوەگەلێک کە', highlighted: 'کاریگەری', part2: 'لەسەر نەوەکان دادەنێن' },
-        subtitle: 'ئێمە پەیوەندییەکانی ڕۆژانە دەکەینە چیرۆکی بەهێز کە کۆمەڵگە oblik دەکەن و متمانە دروست دەکەن.',
+        title: { part1: 'گێڕانەوەکان کە', highlighted: 'کاریگەری', part2: 'لەسەر نەوەکان دادەنێن' },
+        subtitle: 'ئێمە پەیوەندی ڕۆژانە دەکەین بە چیرۆکی بەهێز کە کۆمەڵگا پێکدەهێنن و متمانە دروست دەکەن.',
         button: 'چیرۆکی خۆت بگێڕەوە',
     },
     about: {
         title: "ئێمە کێین",
         aboutText: [
-          "\"لەیەکتربڕینی کەلەپوور و dاهێناندا، PRt براندەکان دەگۆڕێت بۆ گێڕانەوەی بەهێز کە کەلتوور oblik دەکەن.\"",
-          "PRt لە ساڵی ٢٠٢٢ دامەزراوە، زیاتر لە ئاژانسێکی پەیوەندییە گشتییەکانە، ئێمە ئەندازیاری کەلتوورین. ڕەگمان لە نەریتی عێراقیدایە بەڵام بە ئاگاییەکی جیهانییەوە، گێڕانەوەی وا دادەڕێژین کە مێشکەکان بهەژێنن، کاریگەری لەسەر دڵەکان دانێن و گۆڕانکاری بەردەوام لە دیمەنی بازرگانی گەشەسەندووی عێراقدا بهێننە ئاراوە.",
-          "لەگەڵ دوو نووسینگەی ستراتیژی (بەغدا و سلێمانی)، سنووری کارکردنمان سەرتاسەری وڵات دەگرێتەوە. ئێمە بە شێوەیەکی ستراتیژی پۆرتفۆلیۆیەکی پەیوەندییەکانی ساڵانە بە بەهای زیاتر لە ٣.٥ ملیۆن دۆلار بەڕێوەدەبەین، کە بە وردی لە سەرکەوتنی کڕیارەکانماندا وەبەرهێنراوە. تیمی فراوان و هەمەچەشنی PRt، دڵنیایی دەدات لە جێبەجێکردنی بێ کێشە و ئامادەیی کاریگەر لە زاخۆوە تا بەسرە."
+          "\"لەیەکتربڕی کەلەپوور و داهێناندا، PRt براندەکان دەگۆڕێت بۆ گێڕانەوەی بەهێز کە کەلتوور پێکدەهێنن.\"",
+          "PRt لە ساڵی 2022 دامەزراوە، زیاترە لە ئاژانسێکی پەیوەندییە گشتییەکان، ئێمە ئەندازیاری کەلتوورین. بە قووڵی لە نەریتی عێراقیدا ڕەگمان داکوتاوە بەڵام بە هۆشیارییەکی جیهانییەوە، گێڕانەوەکان دادەڕێژین کە مێشکەکان بەشدار دەکەن، کاریگەری لەسەر دڵەکان دادەنێن، و گۆڕانکارییەکی بەردەوام لە دیمەنی بازرگانی گەشەسەندووی عێراقدا دروست دەکەن.",
+          "بە دوو نووسینگەی ستراتیژی (بەغدا و سلێمانی)، دەستڕاگەیشتنمان سەرتاسەری وڵات دەگرێتەوە. ئێمە بە شێوەیەکی ستراتیژی پۆرتفۆلیۆیەکی پەیوەندی ساڵانە بەڕێوەدەبەین کە زیاترە لە 3.5 ملیۆن دۆلار، کە بە وردی لە سەرکەوتنی کڕیارەکانماندا وەبەرهێنراوە. تیمی فراوان و هەمەجۆری PRt، جێبەجێکردنی بێ کێشە و ئامادەیی کاریگەر لە زاخۆوە تا بەسرە مسۆگەر دەکات."
         ],
-        quote: "هەموو چیرۆکێک هێزی ئەوەی هەیە داهاتوو بنووسێتەوە. لە دەستی ئێمەدا، وشەکان دەبنە پرد، خەونەکان بە واقیعەوە دەبەستنەوە، تێڕوانینەکان دەگۆڕن، و چارەنووسەکان دەگۆڕن.",
+        quote: "هەموو چیرۆکێک هێزی ئەوەی هەیە داهاتوو لە نوێ بنووسێتەوە. لە دەستی ئێمەدا، وشەکان دەبنە پرد، خەونەکان بە واقیعەوە دەبەستنەوە، تێڕوانینەکان دەگۆڕن، و چارەنووسەکان دەگۆڕن.",
         mission: {
-            title: "ئەرک",
-            text: "تواناسازکردنی براندەکان بە گێڕانەوەگەلێک کە گفتوگۆکان هەڵدەگیرسێنن، متمانە دروست دەکەن و هانی کردار دەدەن لە سەرانسەری کۆمەڵگەکاندا."
+            title: "ئەرکمان",
+            text: "بەهێزکردنی براندەکان بە گێڕانەوەکان کە گفتوگۆکان دادەگیرسێنن، متمانە دروست دەکەن، و هانی کردار دەدەن لە سەرانسەری کۆمەڵگاکاندا."
         },
         vision: {
-            title: "ڕوانگە",
-            text: "وەک پێشەنگی چیرۆکگێڕی عێراق بناسرێین، گۆڕینی پەیوەندییەکانی ڕۆژانە بۆ گێڕانەوەی بەهێز کە کۆمەڵگە oblik دەکەن و کاریگەری لەسەر نەوەکان دادەنێن."
+            title: "دیدگامان",
+            text: "دانپێدانانمان وەک پێشەنگترین چیرۆکبێژی عێراق، گۆڕینی پەیوەندی ڕۆژانە بۆ گێڕانەوەی بەهێز کە کۆمەڵگا پێکدەهێنن و کاریگەری لەسەر نەوەکان دادەنێن."
         },
         coreBeliefs: {
             title: "باوەڕە سەرەکییەکانمان",
             items: [
-                { title: "ڕاستگۆیی لە سەرووی هەموو شتێکەوە", description: "ئێمە پارێزگاری لە گێڕانەوەکەت دەکەین بە وردی وەک نووسەرانی مێژوو." },
-                { title: "نائاسایی لە ئاساییەوە", description: "ئێمە شیعر لە شتە ئاساییەکاندا دەدۆزینەوە، چیرۆki سەرنجڕاکێش لە ساتەکانی ڕۆژانەوە دادەڕێژین." },
-                { title: "وێستگەی گرنگ", description: "ئێمە سەرکەوتن بە کاریگەریی کەلتووری و میراتی بەردەوام دەپێوین، نەک تەنها بە کەمپینەکان." },
-                { title: "داهێنان وەک باوەڕ", description: "ئێمە تەحەدای نەریتەکان دەکەین، بێوچان بەدوای ڕێگا نەزانراوەکاندا دەگەڕێین کە ئەوەی Mümkünە پێناسە دەکەنەوە." },
-                { title: "کردار لە پێش قسە", description: "پابەندبوونەکانمان بە کردار نەخشێنراون، نەک تەنها بە قسە." },
-                { title: "یەکڕیزی لە فرەییدا", description: "هێزی ئێمە لە دیدگا جیاوازەکاندایە؛ هەر دەنگێک گێڕانەوەکەمان دەوڵەمەند دەکات." },
+                { title: "ڕاستگۆیی لە سەرووی هەموو شتێکەوە", description: "ئێمە پارێزگاری لە گێڕانەوەکەت دەکەین بەوپەڕی وردییەوە وەک نووسەرانی مێژوو.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>` },
+                { title: "نائاسایی لە ئاساییەوە", description: "ئێمە شیعری شاراوە لەناو شتە ئاساییەکاندا دەدۆزینەوە، چیرۆکی سەرنجڕاکێش لە ساتەکانی ڕۆژانە دروست دەکەین.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9 9l-7 2 5 5-1 7 6-4 6 4-1-7 5-5-7-2z"></path></svg>` },
+                { title: "وێستگە گرنگەکان", description: "ئێمە سەرکەوتن بە هەڵمەت ناپێوین، بەڵکو بە کاریگەری کەلتووری و میراتی بەردەوام.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>` },
+                { title: "داهێنان وەک باوەڕ", description: "ئێمە تەحەدای نەریتەکان دەکەین، بێوچان بەدوای ڕێگا نەدۆزراوەکاندا دەگەڕێین کە ئەوەی مومکینە لە نوێ پێناسە دەکەنەوە.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 14h.01"></path><path d="M8.5 14h.01"></path><path d="M4.53 9.47 5.24 11"></path><path d="M19.47 9.47 18.76 11"></path><path d="m12 2-3.5 3.5"></path><path d="M12 22v-3.5"></path><path d="M9 18.5h6"></path><path d="M12 2v10c0 3.3-2.7 6-6 6h-1a6 6 0 0 1-6-6V8"></path><path d="m13 12 5-5"></path></svg>` },
+                { title: "کردار لەپێش وشەوە", description: "پابەندبوونەکانمان بە کردار نەخشێنراون، نەک تەنها بە قسە.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>` },
+                { title: "یەکێتی لە هەمەجۆریدا", description: "هێزی ئێمە لە دیدگا جیاوازەکانەوە سەرچاوە دەگرێت؛ هەموو دەنگێک گێڕانەوەکەمان دەوڵەمەند دەکات.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6"></path><path d="M23 11h-6"></path></svg>` },
             ],
         },
-    },
-    services: {
-        title: "شارەزاییەکانی ئێمە",
-        items: [
-            { title: "پەیوەندی ستراتیژی و کاریگەری", description: "ئێمە تێڕوانینەکان oblik دەکەین و ناوبانگی بەهێز دروست دەکەین بە دانانی براندەکەت لە چەقی گفتوگۆ کاریگەرەکاندا. ستراتیژییەکانی ئێمە دڵنیایی دەدەن کە دەنگت لەلایەن کەسە گرنگەکانەوە دەبیسترێت.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`, items: ["PRی تایبەتمەند بۆ پیشەسازییە دیاریکراوەکان", "پێشەوایەتی بیر", "کاروباری گشتی و داکۆکیکردن", "بەڕێوەبردنی قەیران", "پەیوەندییە میدیاییەکان", "پەیوەندییەکانی ناوخۆیی", "بەڕێوەبردنی براند و ناوبانگ"] },
-            { title: "چیرۆکگێڕی dاهێنەرانە و دیجیتاڵی", description: "لە سەردەمی دیجیتاڵیدا، چیرۆکەکان دراوی پەیوەندین. ئێمە گێڕانەوەی سەرنجڕاکێش و فرە-پلاتفۆرم دروست دەکەین کە سەرنج ڕادەکێشن، هانی بەشداری دەدەن و کۆمەڵگەی بەردەوام لە دەوری براندەکەت دروست دەکەن.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`, items: ["دروستکردنی ناوەڕۆک", "پەرەپێدانی کەمپینی dاهێنەرانە", "PRی دیجیتاڵی و سۆشیال میدیا", "بازاڕکردن لە ڕێگەی کاریگەران", "چاودێریکردنی میدیا و ڕاپۆرتکردن", "خستنەبازاڕی بەرهەم و خزمەتگوزاری"] },
-            { title: "بۆنەکان و چالاککردنی کۆمەڵگە", description: "ئێمە ئەزموونی لەبیرنەکراو دروست دەکەین کە ژیان دەبەخشنە براندەکەت. لە بۆنە گەورەکانەوە تا بەرنامە بنەڕەتییەکانی کۆمەڵگە، ئێمە ساتەکانی پەیوەندی دروست دەکەین کە وەفاداری و پشتیوانی بەهێز دەکەن.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`, items: ["دروستکردن و بەڕێوەبردنی بۆنە", "چالاککردنی مەیدانی", "بەشداریی کۆمەڵگە", "سپۆنسەر و پشتگیریکردن", "هاوبەشی ستراتیژی"] },
-            { title: "تێگەیشتن، لێکۆڵینەوە و بنیاتنانی توانا", description: "بڕیارە لەسەر-داتا-بنەماکان لە دڵی پەیوەندی کاریگەردان. ئێمە تێگەیشتنی بازاڕ، شیکاری و ڕاهێنان پێشکەش دەکەین کە پێویستن بۆ تێپەڕاندنی دیمەنە ئاڵۆزەکان و تواناسازکردنی تیمەکەت بۆ سەرکەوتن.", icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`, items: ["لێکۆڵینەوە و شیکاریی بازاڕ", "ڕاهێنان و ڕێنمایی میدیایی"] },
-        ],
-    },
-    projects: {
-        title: "بەڵگە لە کرداردا",
-        subtitle: "تێڕوانینێک بۆ کاریگەریمان",
-        subtitle_detail: "ئەو پڕۆژانەی لەم پرۆفایلەدا نیشان دراون، هەڵبژاردەیەکن لە کارە دیارەکانمان—کەمپینی جیاواز کە پان و بەرینی تواناکانمان نیشان دەدەن. ئەمانە تەواوی چیرۆکەکە نین. لە پشت پەردەوە، PRt دەیان دەستپێشخەری دیکەی لە سەرانسەری کەرتەکان، شارەکان و قەبارەکاندا سەرکردایەتی و جێبەجێ کردووە. لە چالاکییە بنەڕەتییەکانەوە تا ستراتیژییەکانی ئاستی دەستەی بەڕێوەبردن، کارەکانمان تەواوی بواری نایابی پەیوەندییە گشتییەکان دەگرێتەوە. هەموو پڕۆژەیەک، جا لێرەدا باس کرابێت یان نا، ئیمزای ئێمەی هەڵگرتووە: ستراتیژی بیرلێکراوە، شارەزایی کەلتووری، و پابەندبوونی بێوچان بە ئەنجامەکان.",
-        impactLabel: "کاریگەری",
-        cta: "ببینە",
-        summaries: [
-          { title: "گۆڕانکاری لە بواری پەیوەندییەکان", description: "لە زاخۆوە تا بەسرە، PRt گفتوگۆی سەرتاسەری بۆ کۆمپانیا پێشەنگەکانی پەیوەندییەکانی عێراق هەڵگیرساند. لە ڕێگەی ئەزموونی نوقمکەر و چیرۆکگێڕی لەسەر بنەمای داتا، ئێمە زیاتر لە ٢٠ ملیۆن دڵمان پێکەوە بەستەوە—تێکەڵکردنی داهێنان، تەکنەلۆژیا و کەلتوور لە یەک دەنگی بەهێزدا." },
-          { title: "دیدگای دارایی نیشتمانی", description: "بە هاوبەشی لەگەڵ لایەنە پەیوەندیدارە نیشتمانییە سەرەکییەکان، PRt ستراتیژی پەیوەندییەکانی لە پشت یەکێک لە گرنگترین دەستپێشخەرییە ئابوورییەکانی عێراقەوە داڕشت و بەڕێوەی برد—پردێک لە نێوان دیدگا، متمانە و بەشداری گشتیدا." },
-          { title: "تواناسازکردنی داهێنەران", description: "لە ئامادەیی بوێرانەی براندی BYDەوە تا پەرەسەندنی کات بەسەربردنی عێراق مۆڵ، PRt ئاهەنگ دەگێڕێت بۆ داهێنان و داهێنەری لە سەرانسەری پیشەسازییەکاندا. لە ڕێگەی چیرۆکگێڕی و بەشداری ستراتیژییەوە، ئێمە ئەو دەنگانە بەرز دەکەینەوە کە کەلتوور و بازرگانی مۆدێرنی عێراق oblik دەکەن." },
-        ],
-        items: [
-           { 
-              title: "یەلا فۆرمولا", 
-              overview: "چالاکییەکی تەلەفۆنی نیشتمانی کە جۆشی فۆرمولا یەک و شارەزایی پەیوەندییە ستراتیژییەکانی تێکەڵ کرد—یەکخستنی بەشداریی جەستەیی، کارلێکی دیجیتاڵی و وردبینی گێڕانەوە. ئەم کەمپینە هاندەرێکی بارگاویکردنەوەی گۆڕی بۆ ساتێکی کەلتووری گشتگیر.",
-              approach: [
-                  "PRt سەرکردایەتی کەمپینێکی پەیوەندییە گشتییەکانی ٣٦٠ پلەی کرد، بە شێوەیەکی بێ کێشە ئەزموونە مەیدانییەکانی لەگەڵ ستراتیژییەکی پەیوەندییەکانی تەواودا تێکەڵ کرد.",
-                  "یارییەکی پێشبڕکێی مۆبایلی کارلێککاری پەرەپێدا کە بەستراوەتەوە بە ڕەفتاری بارگاویکردنەوە، پاداشتی بەشداریکردنی بە هاندەری دیجیتاڵی بەمانا دەدا.",
-                  "چالاکییە مەیدانییە نوقمکەرەکانی لە پارێzga سەرەکییەکاندا جێبەجێ کرد، پەیامی یەکگرتووی لە ڕێگەی دیزاین، سیناریۆ و ئەزموونی شوێنەوە گەیاند.",
-                  "کاریگەرە پلە یەکەکانی کۆکردەوە بۆ گێڕانەوەی گەشتی کەمپینەکە لە کاتی ڕاستەقینەدا، ناوەڕۆکی وا دروست کرد کە لە سەرانسەری پلاتفۆرم و دیمۆگرافیاکاندا دەنگی دایەوە.",
-                  "ستراتیژییەکی سۆشیال میدیای هاوکاتی خستەگەڕ، بە پاڵپشتی ڕووماڵی ڕاستەوخۆ، سەرمایەی داهێنەرانە و تاکتیکی بەشداریی بینەران.",
-                  "سەرپەرشتی چاودێری و ڕاپۆرتکردنی سەرەتا تا کۆتایی، شیکاریی هەست و سۆز و باشکردنی ئەدای کرد بۆ ڕێنماییکردنی یەکخستنی پەیام و بەهێزکردنی.",
-                  "پسپۆڕانی ڕاهێنراوی بەڕێوەبردنی قەرەباڵغی نارد بۆ دڵنیابوون لە ئەزموونی گشتیی بێ کێشە و بەرز و کارلێکی براند لە هەر شوێنێکی بۆنەکەدا."
-              ],
-              impact: [
-                  "زیاتر لە ٢٠٠،٠٠٠ بەشداربووی لە سەرانسەری خاڵە دیجیتاڵی و جەستەییەکانی کەمپینەکەدا هەبوو.",
-                  "ملیۆنەها بینینی ئۆرگانیکی بەدەستهێنا، بەهۆی چیرۆکگێڕی کاریگەران و بەشداریی کۆمەڵگەوە.",
-                  "پەیوەندیی براند و ڕەفتاری بارگاویکردنەوەی بەهێز کرد، پێگەی کڕیارەکەی وەک پێشەنگێکی ژیان-محور لە بواری پەیوەندییەکاندا پتەو کرد."
-              ], 
-              image: "https://www.datocms-assets.com/134341/1745407148-pexels-tara-winstead-8386440-1.jpg?ar64=MTQxOjY1&auto=format&crop=focalpoint&fit=crop&fm=webp" 
-            },
-            { 
-              title: "فیستیڤاڵی ڕەمەزان", 
-              overview: "کەمپینێکی کەلتووری دەوڵەمەند کە بۆ قووڵکردنەوەی پەیوەندیی سۆزداری و نیشاندانی بەها هاوبەشەکان لە پیرۆزترین مانگی عێراقدا داڕێژرا. بۆ دوو ساڵی یەک لە دوای یەک دیزاین و پێشکەش کرا، فیستیڤاڵی ڕەمەزان بوو بە زیاتر لە چالاکییەکی براند، بوو بە نەریتێک.",
-              approach: [
-                  "PRt ئاهەنگێکی سەرتاسەری وڵاتی ڕێکخست کە کەلەپوور، مرۆڤایەتی و چیرۆکگێڕی تێکەڵ کرد.",
-                  "بۆنەی گەورە و کۆمەڵگە-محوری لە سەرانسەری عێراقدا جێبەجێ کرد، ڕێزی لە ڕۆحی ڕەمەزان گرت و بانگهێشتی خەڵکی کرد بۆ ئەزموونی نوقمکەر و بەمانا.",
-                  "ناوەڕۆکی بینراو و گێڕانەوەی کەلتووری دەوڵەمەندی پەرەپێدا کە ڕێزیان لە داب و نەریتی عێراقی و ڕۆحی بەخشندەیی دەگرت.",
-                  "کەمپینێکی دیجیتاڵی یەکگرتووی چالاک کرد کە چیرۆکەکانی پێکەوەبوون و یەکڕیزی بەرز کردەوە، دەنگدانەوەی سۆزداری لە سەرانسەری بینەران و پلاتفۆرمەکاندا دروست کرد."
-              ],
-              impact: [
-                  "ساڵانە پێشوازی لە زیاتر لە ٢٥،٠٠٠ ئامادەبوو کرا، ئەمەش وایکرد ببێتە یەکێک لە دیارترین کەمپینە وەرزییەکانی بازاڕ.",
-                  "بەشداریی بینەرانی لە ڕەمەزاندا بە شێوەیەکی بەرچاو بەرز کردەوە، هانی بەشداریی هەم لەسەر ئینتەرنێت و هەم لە مەیداندا دا.",
-                  "پێگەی کڕیارەکەی وەک براندێکی هاوسۆزی و گرنگیی کەلتووری قووڵ کردەوە، متمانە و وەفاداری سۆزداری لە سەرانسەری کۆمەڵگەکاندا بەهێز کرد."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg" 
-            },
-            { 
-              title: "AI بۆ کاریگەران", 
-              overview: "بۆنەیەکی dاهێنەرانە بۆ ناساندنی تەکنەلۆژیای زیرەکیی دەستکردی پێشکەوتوو بە کاریگەرە دیارەکان، بەرزکردنەوەی تواناکانیان لە دروستکردنی ناوەڕۆک و کاریگەریی دیجیتاڵییان.",
-              approach: [
-                  "وۆرکشۆپی کرداریی تایبەت بۆ کاریگەرە پێشەنگەکانی عێراق.",
-                  "نمایشی ئامرازەکانی زیرەکیی دەستکرد کە بۆ داهێنانی ناوەڕۆک دیزاین کراون.",
-                  "کەمپینی سۆشیال میدیای کاریگەر بۆ دۆکیومێنتکردنی ئەزموونی کاریگەران."
-              ],
-              impact: [
-                  "توانا دیجیتاڵییەکان و کوالیتی ناوەڕۆکی کاریگەرانی بەرز کردەوە.",
-                  "بینرانی براندی لە ڕێگەی ناوەڕۆکی ڕەسەنی کاریگەرانەوە زیاد کرد.",
-                  "پێگەی PRt و کڕیارەکەی وەک پێشەنگ لە یەکخستنی تەکنەلۆژیادا چەسپاند."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop" 
-            },
-            { 
-              title: "کەمپینی لەیلا", 
-              overview: "کەمپینێکی PRی پێشەنگ بۆ ناساندنی لەیلا، یەکەم یاریدەدەری تەلەfۆنی عێراق کە بە زیرەکیی دەستکرد کاردەکات، بەردەست لە ڕێگەی پلاتفۆرمە دیجیتاڵییە جیاوازەکانەوە وەک واتسئەپ، مەسنجەر و وێبسایتی کڕیار.",
-              approach: [
-                  "ناوەڕۆکی دیجیتاڵی گاڵتەجاڕانە بەڵام پڕ لە تێگەیشتنی بەرهەمهێنا کە کاریگەرە دیارەکانی تێدابوو بۆ ڕاکێشانی سەرنجی گشتی.",
-                  "بە شێوەیەکی ستراتیژی سوودی لە پلاتفۆرمەکانی سۆشیال میدیا وەرگرت بۆ نیشاندانی ئاسانی بەکارهێنان و وەڵامدانەوەی لەیلا.",
-                  "پەیوەندییەکانی PRی پێشەنگانەی بەڕێوەبرد کە تیشکیان دەخستە سەر داهێنانی تەکنەلۆژی و ئەزموونی کڕیار."
-              ],
-              impact: [
-                  "بەسەرکەوتوویی لەیلای وەک یاریدەدەرێکی دیجیتاڵی ناسراو و متمانەپێکراو چەسپاند.",
-                  "بەشداریی دیجیتاڵی بە شێوەیەکی بەرچاو بەرز کردەوە، هانی بەکارهێنانی خزمەتگوزارییە دیجیتاڵییەکانی کڕیاری دا.",
-                  "پێشەنگایەتیی کڕیarەکەی لە چارەسەرەکانی خزمەتگوزاریی کڕیارانی تەکنەلۆژی-محوردا بەهێز کرد."
-              ], 
-              image: "https://media.licdn.com/dms/image/v2/D4D22AQFi21LfZL70Jg/feedshare-shrink_800/feedshare-shrink_800/0/1731783981800?e=2147483647&v=beta&t=VbN6o84xPaaLyyt2McSVKwNnf-xggctsbY2FQLTedRY" 
-            },
-            { 
-              title: "کۆڕەکانی TechWave", 
-              overview: "بۆنەیەکی تەکنەلۆژی زیندوو و گەنجانە کە بە هاوکاریی دامەزراوە ئەکادیمییەکان بەڕێوەچوو، تیشکی خستە سەر ترێندە تەکنەلۆژییە نوێیەکان و نەوەی داهاتووی dاهێنەران و کارسازانی تەکنەلۆژیای عێراقی هان دا.",
-              approach: [
-                  "دانیشتنی کارلێککار، گفتوگۆی پانێڵ و نمایشی ڕاستەوخۆی ڕێکخست کە تیشکیان دەخستە سەر تەکنەلۆژیا پێشکەوتووەکان.",
-                  "هاوکارییەکانی نێوان ئەکادیمیا، کۆمپانیاکانی تەکنەلۆژیا و کۆمەڵگە کارسازییەکانی ئاسان کرد.",
-                  "ستراتیژییەکانی PR و دیجیتاڵی دینامیکی جێبەجێ کرد بۆ ڕاکێشانی ئامادەبوونی بەرفراوان و سەرنجی میدیا."
-              ],
-              impact: [
-                  "بەسەرکەوتوویی هەزاران بەشداربووی هێنایە ناوەوە، بە شێوەیەکی بەرچاو هۆشیاریی دەربارەی دەرفەتە تەکنەلۆژییەکان بەرز کردەوە.",
-                  "پەیوەندییەکانی کۆمەڵگە و لایەنە پەیوەندیدارەکانی بەهێز کرد، کڕیارەکانی وەک پێشەنگ لە پەروەردەی تەکنەلۆژی و داهێناندا جێگیر کرد.",
-                  "میدیا کاڤەرێکی بەهێز و دەنگدانەوەی سۆشیالی دروست کرد، کاریگەریی ئەرێنی لەسەر بینرانی براندی کڕیار لەنێو گەنجان و پەروەردەکاراندا هەبوو."
-              ], 
-              image: "https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=3540&auto=format=fit&crop" 
-            },
-             { 
-              title: "فیستیڤاڵی ڕەمەزانی ئاسیاسێڵ", 
-              overview: "ئێوارەیەکی زیندوو لە کەلتوور، داهێنان و کۆمەڵگە، فیستیڤاڵەکە هەزارانی لەژێر ڕووناکی بەغدادا کۆکردەوە بۆ مۆسیقا، یاری، هونەر و ساتە هاوبەشەکان. زیاتر لە بۆنەیەک—ئەو دەربڕینێکی زیندووی هاوسۆزیی براند بوو، کە بە وردی لە هەموو وردەکارییەک و هەموو ڕوخسارێکدا داڕێژرابوو.",
-              impact: [
-                  "بەشدارییەکی بەرچاوی کۆمەڵگەیی و وەفاداری بۆ براندی دروست کرد.",
-                  "ڕووماڵێکی میدیایی ئەرێنی بەرفراوان و دەنگدانەوەیەکی زۆری لە سۆشیال میدیادا دروست کرد.",
-                  "پابەندبوونی کڕیاری بە دەستپێشخەرییە کەلتووری و کۆمەڵگەییەکان دووپات کردەوە."
-              ], 
-              image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=3540&auto=format&fit=crop"
-            },
-            { 
-              title: "چیرۆکێکی تەواونەکراو", 
-              overview: "دەنگێک زوو بێدەنگ کرا، بەڵام هەرگیز نەبیستراو نەبوو—ئەم ڕێزلێنانە ڕێز لە خەونی بوراق یاسین دەگرێت لە ڕێگەی تۆمارێکی کۆتاییەوە کە بە ڕۆح و ڕاستگۆیی دەنگ دەداتەوە. بە ڕێزێکی قووڵەوە بەرهەم هێنراوە، هەم وەک ماڵئاوایی و هەم وەک بەڵێنێک دەمێنێتەوە: کە حەزی ڕاستەقینە تێبینییەکی بەردەوام بەجێدەهێڵێت.",
-              impact: [
-                  "ڕێزلێنانێکی کاریگەر و بەڕێزی دروست کرد کە بە قووڵی لەلایەن بینەرانەوە دەنگی دایەوە.",
-                  "شەپۆلێک لە پشتیوانی و بەشداریی دڵسۆزانەی لەسەر ئینتەرنێت دروست کرد.",
-                  "ڕێزی لە میراتی هونەرمەندەکە گرت و پلاتفۆرمێکی بۆ کاری کۆتایی دابین کرد."
-              ], 
-              image: "https://kurdishglobe.krd/wp-content/uploads/2025/03/IMG-20250310-WA0023.jpg"
-            }
-        ],
-    },
-    valueStats: [
-        { value: 3.5, decimals: 1, prefix: "$", suffix: "+M", label: "بەڕێوەبردنی ساڵانە لە پەیوەندییەکانی کڕیار" },
-        { value: 30, suffix: "+", label: "کارمەند لە سەرانسەری هەرێم" },
-        { value: 300, suffix: "+", label: "پێشخەری مەیدانی لە سەرانسەری وڵات" },
-        { value: 2, label: "ئۆفیسی ستراتیژی و کۆگا" },
-    ],
-    clients: {
-      title: "کڕیاران و هاوکارییەکان",
-      subtitle: "گەشتەکەمان هاوبەشی لەگەڵ پێشەنگانی پیشەسازی، ڕێکخراوە جیهانییە ناسراوەکان و کۆمپانیا ناوخۆییە کاریگەرەکان لەخۆدەگرێت. ئەوان متمانەمان پێدەکەن بە چیرۆکەکانیان—ڕێگەمان پێدەدات دەنگیان بەرز بکەینەوە و مەودایان فراوان بکەین.",
-      list: ["Startup Grind", "USAID", "Chemonics", "KAPITA", "EARTHLINK", "GIZ", "Asiacell", "Tafa3ul", "1001", "The Station", "Iraqi Private Banks League", "Central Bank of Iraq"],
-    },
-    careers: {
-      title: "ببە بە بەشێک لە تیمەکەمان",
-      subtitle: "ئێمە ئەندازیاری کەلتوورین، گێڕانەوەی وا دادەڕێژین کە سبەی پێناسە دەکەن. ئەگەر حەزت لە داهێنان، فرەیی و دروستکردنی کاریگەریی بەردەوامە، دەمانەوێت گوێمان لێت بێت.",
-      culture: {
-        title: "بۆچی لە PRt کار بکەیت؟",
-        text: "ئێمە زیاتر لە ئاژانسێکین؛ ئێمە کۆمەڵگەیەکی چیرۆکگێڕ، ستراتیژیست و داهێنەرین. هێزمان لە دیدگا جیاوازەکانمانەوە سەرچاوە دەگرێت، کە حەزێکی هاوبەش بۆ داڕشتنی گێڕانەوەی گرنگ یەکماندەخات. ئێمە تەحەدای نەریتەکان دەکەین، شیعر لە شتە ئاساییەکاندا دەدۆزینەوە، و باوەڕمان وایە کە کردارەکانمان میراتمان دیاری دەکەن.",
-        perks: {
-          title: "سوود و ئیمتیازات",
-          items: ["مووچەی ڕکابەر", "پەرەپێدانی پیشەیی", "ژینگەی هاوکارانە", "کاری بەمانا"],
+        team: {
+          title: "ئاشنا بن بە ئەندازیارانی کاریگەری",
+          subtitle: "هێزی پاڵنەری پشت ستراتیژییە داهێنەرەکانمان و گێڕانەوە کاریگەرەکانمان. شارەزایی هەمەجۆری تیمەکەمان و حەزی هاوبەشیان بۆ چیرۆکگێڕانەوە بنچینەی سەرکەوتنمانن.",
+          members: [
+            { name: "نور ئەلهاشمی", title: "بەرپرسی جێبەجێکار", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1288&auto=format&fit=crop" },
+            { name: "عومەر خەلیل", title: "بەڕێوەبەری داهێنان", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1287&auto=format&fit=crop" },
+            { name: "زەید ئەلغەنام", title: "بەڕێوەبەری پڕۆژەکانی کاریگەری کۆمەڵایەتی", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop" },
+            { name: "ئایە ئەلنوعەیمی", title: "سەرۆکی پەیوەندییە ناوخۆییەکان", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop" },
+            { name: "تارق ئەلجەنابی", title: "بەڕێوەبەری پەیوەندییەکانی میدیا", image: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop" },
+            { name: "لەیلا حەسەن", title: "سەرۆکی پەیوەندییەکانی قەیرانەکان", image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop" },
+            { name: "عەلی موهەنەد خالد", title: "بەرپرسی لۆجستی", image: "https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=1287&auto=format&fit=crop" },
+            { name: "فاتیمە ئەلئەمیر", title: "بەڕێوەبەری پڕۆژە", image: "https://images.unsplash.com/photo-1554415511-53a4f85412a8?q=80&w=1470&auto=format&fit=crop" }
+          ]
         }
+    },
+     technology: {
+      title: "تەکنەلۆژیا و داهێنان",
+      subtitle: "کەڵک وەرگرتن لە هێزی داتا و زیرەکی دەستکرد بۆ داڕشتنی گێڕانەوەکان کە تەنها ناگێڕدرێنەوە، بەڵکو هەستیان پێدەکرێت. ئێمە کاریگەری ئەندازیاری دەکەین لە ڕێگەی تەکنەلۆژیای پێشکەوتووەوە.",
+      feature1: {
+        title: "گێڕانەوەکانی پشتیوان بە داتا",
+        text: "ئێمە لە تێگەیشتنی ئاسایی تێدەپەڕین. ستراتیژییەکانمان لەسەر بنەمای شیکاری داتای پتەو، توێژینەوەی بازاڕ، و شیکاری هەستەکان بنیات نراون. بە تێگەیشتن لە ڕەفتاری بینەران و وردەکارییە کەلتوورییەکان لە ئاستێکی ورددا، دڵنیا دەبینەوە کە هەموو پەیامێک بە وردی ئاراستە کراوە و بەهێزیی دەنگدانەوەی هەیە."
       },
-      openings: {
-        title: "هەلەکانی کاری ئێستا",
-        cta: "ئێستا داواکاری پێشکەش بکە",
-        jobs: [
-          { title: "پسپۆڕی پەیوەندییە گشتییەکان", location: "بەغداد", type: "کاتی تەواو" },
-          { title: "دروستکەری ناوەڕۆکی دیجیتاڵی", location: "بەغداد", type: "کاتی تەواو" },
-          { title: "بەڕێوەبەری سۆشیال میدیا", location: "سلێمانی", type: "کاتی تەواو" },
-          { title: "ڕێکخەری بۆنەکان", location: "بەغداد", type: "گرێبەست" },
-        ]
+      feature2: {
+        title: "تێڕوانینەکانی پشتیوان بە زیرەکی دەستکرد",
+        text: "بە بەکارهێنانی زیرەکی دەستکرد، تێڕوانینی پێشبینیکراو دەکەینەوە و چاودێری میدیای ئاڵۆز ئۆتۆماتیکی دەکەین. ئەمە ڕێگەمان پێدەدات پێشبینی ترێندەکان بکەین، دەرفەتەکان دیاری بکەین، و بە خێرایی و زیرەکییەکی بێوێنە وەڵامی قەیرانەکان بدەینەوە، هەمیشە کڕیارەکانمان یەک هەنگاو لە پێشەوە دەهێڵینەوە."
       }
     },
+    process: {
+        title: "پرۆسەی ستراتیژی ئێمە",
+        subtitle: "ئێمە وردبینی میتۆدی لەگەڵ تێگەیشتنی داهێنەرانە تێکەڵ دەکەین. پرۆسەکەمان بۆ دۆزینەوەی تێڕوانینی قووڵ و گۆڕینیان بۆ گێڕانەوەی کاریگەر و دەنگدانەوەی کەلتووری داڕێژراوە.",
+        steps: [
+            { title: "دۆزینەوە و ستراتیژی", description: "بە نوقمبوون لە جیهانی ئێوە دەست پێدەکەین. لە ڕێگەی گوێگرتنی قووڵ، شیکاری بازاڕ، و وۆرک شۆپی هاوبەشەوە، ئامانجی ڕوون دیاری دەکەین و نەخشەی ڕێگایەکی ستراتیژی بۆ سەرکەوتن دەکێشین.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>` },
+            { title: "داڕشتنی گێڕانەوە", description: "لێرەدایە تێڕوانین دەبێتە چیرۆک. تیمی نووسەران، ستراتیژیستەکان، و داهێنەرانمان پێکەوە کاردەکەن بۆ بنیاتنانی گێڕانەوەیەکی سەرەکی سەرنجڕاکێش کە ڕەسەن بێت بۆ براندەکەتان و سەرنجی بینەرانتان ڕابکێشێت.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>` },
+            { title: "چالاککردنی فرە-کەناڵ", description: "چیرۆکێکی مەزن شایەنی شانۆیەکی گەورەیە. ئێمە گێڕانەوەکەتان لە سەرانسەری تێکەڵەیەکی بە وردی هەڵبژێردراوی کەناڵەکاندا بڵاودەکەینەوە - لە پەیوەندییەکانی میدیا و پلاتفۆرمە دیجیتاڵییەکانەوە تا بۆنە نوقمکەرەکان - دڵنیایی لە زۆرترین دەستڕاگەیشتن و دەنگدانەوە دەدەین.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>` },
+            { title: "شیکاری کاریگەری", description: "کاری ئێمە لەگەڵ دەستپێکردندا کۆتایی نایەت. ئێمە بە وردی بەدواداچوون بۆ ئەدا دەکەین، هەستەکان دەپێوین، و داتاکان شیدەکەینەوە بۆ دابینکردنی ڕاپۆرتی ڕوون لەسەر گەڕانەوەی وەبەرهێنان و کۆکردنەوەی تێڕوانینەکان بۆ باشترکردن و گەشەی داهاتوو.", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20V16"></path></svg>` }
+        ]
+    },
+     insights: {
+        title: "تێڕوانین لە شارەزایانمانەوە",
+        subtitle: "ئاشنا بن بە ستراتیژیستەکان، چیرۆکبێژان، و داهێنەران کە داهاتووی پەیوەندی لە ناوچەکەماندا شێوە دەکەن.",
+        items: [
+            { 
+              topic: "چۆن دەتوانێت پەیوەندییە گشتییەکان سوود لە زیرەکی دەستکرد و شیکاری داتا وەربگرێت؟", 
+              expertName: "زەید ئەلغەنام", 
+              expertTitle: "بەڕێوەبەری پڕۆژەکانی کاریگەری کۆمەڵایەتی",
+              expertImage: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "ستراتیژییەکانی پەیوەندی ناوخۆیی کە دڵسۆزی کارمەندان دروست دەکەن.", 
+              expertName: "ئایە ئەلنوعەیمی", 
+              expertTitle: "سەرۆکی پەیوەندییە ناوخۆییەکان",
+              expertImage: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1287&auto=format&fit=crop"
+            },
+            { 
+              topic: "چۆن پەیوەندییە گشتییەکان پردێک لە نێوان براند و کۆمەڵگادا دروست دەکات؟", 
+              expertName: "تارق ئەلجەنابی", 
+              expertTitle: "بەڕێوەبەری پەیوەندییەکانی میدیا",
+              expertImage: "https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=1471&auto=format&fit=crop"
+            },
+            { 
+              topic: "ڕووبەڕووبوونەوەی قەیرانەکان: ڕۆڵی گرنگی پەیوەندییە گشتییەکان لە بەڕێوەبردنی ناوبانگدا.", 
+              expertName: "لەیلا حەسەن", 
+              expertTitle: "سەرۆکی پەیوەندییەکانی قەیرانەکان",
+              expertImage: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1287&auto=format&fit=crop"
+            }
+        ]
+    },
+    testimonials: {
+        title: "کڕیارەکانمان چی دەڵێن",
+        subtitle: "هاوبەشی بنیات نراو لەسەر متمانە، ستراتیژی، و ئەنجامی نایاب. لێرەدا هەندێک لە کڕیارەکانمان باسی گەشتەکەیان لەگەڵ PRt دەکەن.",
+        items: [
+            { quote: "PRt تەنها هەڵمەتێکی بەڕێوە نەبرد؛ ئەوان بزووتنەوەیەکیان دەستپێکرد. تێگەیشتنیان لە دیمەنی کەلتووری عێراقی بێوێنەیە. ئەوان هاوبەشی ڕاستەقینەن بە هەموو مانایەکی وشەکە.", author: "ئەحمەد ئەلسودانی", title: "بەڕێوەبەری جێبەجێکار، Tech Innovators Inc." },
+            { quote: "دووربینی ستراتیژی و جێبەجێکردنی بێ کەموکوڕی تیمەکە فێستیڤاڵی ساڵانەی ئێمەی گۆڕی بۆ بۆنەیەکی ناسراوی نیشتمانی. حەز و دڵسۆزییان لە هەموو وردەکارییەکدا دیارە.", author: "فاتیمە ئەلجبوری", title: "بەڕێوەبەر، فێستیڤاڵی هونەر و کەلتووری بەغدا" },
+            { quote: "لە ساتێکی kritîkî بۆ براندەکەمان، PRt ڕێنمایی و بەڕێوەبردنی قەیرانی پێشکەش کرد کە ئێمە زۆر پێویستمان بوو. ڕێبازی هێمن و ستراتیژییان ناوبانگی ئێمەی پاراست و متمانەیەکی بەهێزتری لەگەڵ لایەنە پەیوەندیدارەکانمان دروست کرد.", author: "یوسف ئەلمالیکی", title: "بەڕێوەبەری گشتی، Basra Logistics" },
+        ]
+    },
+    services: {
+      title: "خزمەتگوزارییەکانمان",
+      items: [
+          {
+              title: "پەیوەندییە گشتییەکان",
+              description: "داڕشتنی گێڕانەوەکان کە ناوبانگ دروست دەکەن و کاریگەری دادەنێن.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+              items: ["پەیوەندییەکانی میدیا", "بەڕێوەبردنی قەیرانەکان", "پەیوەندییەکانی کۆمپانیا", "بەڕێوەبردنی ناوبانگ"]
+          },
+          {
+              title: "ستراتیژی دیجیتاڵی",
+              description: "بەشدارکردنی بینەران لە دیمەنی دیجیتاڵیدا بە ستراتیژی پشتیوان بە داتا.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+              items: ["بەڕێوەبردنی سۆشیال میدیا", "دروستکردنی ناوەڕۆک", "بازاڕکردن لە ڕێگەی کاریگەرانەوە", "باشترکردنی بزوێنەری گەڕان و بازاڕکردن لە ڕێگەیەوە"]
+          },
+          {
+              title: "بەڕێوەبردنی بۆنەکان",
+              description: "دروستکردنی ئەزموونی لەبیرنەکراو کە براندەکان بە بینەرانیانەوە دەبەستێتەوە.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`,
+              items: ["بۆنەکانی کۆمپانیاکان", "دەستپێکردنی بەرهەم", "کۆنفرانسی ڕۆژنامەوانی", "فێستیڤاڵی کەلتووری"]
+          },
+      ]
+    },
+    projects: {
+        title: "کارەکانمان",
+        subtitle: "چیرۆکانێک کە ئێمە شێوەمان داون، کاریگەرییانێک کە ئێمە دروستمان کردوون.",
+        subtitle_detail: "کۆمەڵێک پڕۆژەی هەڵبژێردراو کە ڕێبازی ستراتیژی و جێبەجێکردنی داهێنەرانەی ئێمە نیشان دەدەن. کلیک بکە و گۆیەکە ڕابکێشە بۆ گەڕان بەناو پۆرتفۆلیۆکەماندا.",
+        approachLabel: "ڕێبازی ئێمە",
+        impactLabel: "کاریگەری",
+        cta: "زیاتر بزانە",
+        cta_show_more: "پیشاندانی وردەکارییەکان",
+        cta_show_less: "شاردنەوەی وردەکارییەکان",
+        items: [
+            {
+                title: "دەستپێکردنی داهێنەرانی تەکنەلۆژیا",
+                image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1470&auto=format&fit=crop",
+                overview: "هەڵمەتێکی گشتگیر بۆ دەستپێکردنی بەرهەمێکی تەکنەلۆژی نوێ لە بازاڕی عێراقدا، دامەزراندنی وەک پێشەنگی بازاڕ لە ڕۆژی یەکەمەوە.",
+                approach: ["توێژینەوەی بازاڕی قووڵ بۆ دیاریکردنی دیمۆگرافیای سەرەکی.", "بەرنامەی ستراتیژی بۆ پەیوەندیکردن بە کاریگەرانەوە.", "هەڵمەتی میدیایی فرە-پلاتفۆرم لە سەرانسەری کەناڵە دیجیتاڵی و نەریتییەکاندا."],
+                impact: ["بەدەستهێنانی 200%ی ئامانجی فرۆشتن لە چارەکی یەکەمدا.", "دروستکردنی زیاتر لە 50 ملیۆن بینینی میدیایی.", "بەدەستهێنانی خەڵاتی 'بەرهەمی ساڵ' لە بڵاوکراوەیەکی تەکنەلۆژی پێشەنگەوە."]
+            },
+            {
+                title: "فێستیڤاڵی هونەری بەغدا",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop",
+                overview: "دەستپێشخەرییەکی کاریگەری کۆمەڵایەتی بۆ برەودان بە بەهێزکردنی گەنجان و ئاڵوگۆڕی کەلتووری لە ڕێگەی فێستیڤاڵێکی هونەری لەسەر ئاستی شار.",
+                approach: ["بەشداریپێکردنی کۆمەڵگا و هاوبەشی لەگەڵ هونەرمەندە ناوخۆییەکان.", "هەڵمەتێکی دیجیتاڵی ئاراستەکراو بۆ هاندانی ئامادەبوون و بەشداریکردن.", "پەیوەندی میدیایی ئاست بەرز بۆ مسۆگەرکردنی ڕووماڵی نیشتمانی."],
+                impact: ["بەشداریکردنی زیاتر لە 10,000 گەنج لە 5 شاردا.", "مسۆگەرکردنی پارەدارکردنی درێژخایەن لە هاوبەشە کەلتوورییە نێودەوڵەتییەکانەوە.", "زیادکردنی گەشتیاری بۆ ناوچەکە بە ڕێژەی 15% لە ماوەی فێستیڤاڵەکەدا."]
+            },
+            { title: "دووبارە براندکردنەوەی تەلەکۆمی نیشتمانی", image: "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?q=80&w=1374&auto=format&fit=crop", overview: "بوژاندنەوەی براندێکی گەورەی تەلەکۆم بۆ دووبارە پەیوەستبوونەوە بە بینەرێکی گەنجتر و نوێکردنەوەی وێنەکەی.", impact: ["زیادبوونی 25% لە هەستی براند لەنێو دیمۆگرافیای 18-25 ساڵاندا.", "دەستپێکردنی سەرکەوتووانەی پلانێکی مۆبایلی نوێی تایبەت بە گەنجان."] },
+            { title: "دەستپێشخەری بەرپرسیارێتی کۆمەڵایەتی بانکی هۆریزۆن", image: "https://images.unsplash.com/photo-1560439546-17b79d71a17c?q=80&w=1374&auto=format&fit=crop", overview: "پەرەپێدان و برەودان بە بەرنامەیەکی خوێندەواری دارایی نیشتمانی بۆ خاوەن کارە بچووکەکان.", impact: ["بەهێزکردنی زیاتر لە 500 خاوەنکار بە کارامەیی دارایی سەرەکی.", "وەرگرتنی خەڵاتێکی نیشتمانی بۆ بەرپرسیارێتی کۆمەڵایەتی کۆمپانیاکان."] },
+            { title: "فراوانبوونی پیشەسازییەکانی کەنداو", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop", overview: "پلانێکی پەیوەندی ستراتیژی بۆ پشتیوانیکردنی فراوانبوونی کۆمپانیاکە بۆ بازاڕە هەرێمییە نوێیەکان.", impact: ["بە سەرکەوتوویی دامەزراندنی ئامادەییەکی بەهێزی براند لە دوو وڵاتی نوێدا.", "ئاسانکاریکردنی هاوبەشییە سەرەکییەکان لەگەڵ دابەشکەر و لایەنە پەیوەندیدارە ناوخۆییەکان."] },
+            { title: "بەڕێوەبردنی ناوبانگی لۆجستی بەسرە", image: "https://images.unsplash.com/photo-1577563908411-5ab7254a4f35?q=80&w=1470&auto=format&fit=crop", overview: "ستراتیژییەکی چالاکانەی پەیوەندی قەیران و بەڕێوەبردنی ناوبانگ بۆ ڕووبەڕووبوونەوەی تەحەددییە ئاڵۆزەکانی پیشەسازییەکە.", impact: ["پاراستنی وێنەیەکی گشتی ئەرێنی لە ماوەی ناجێگیری بازاڕدا.", "بەهێزکردنی متمانە و شەفافیەت لەگەڵ کڕیاران و وەبەرهێنەران."] },
+            { title: "هەڵمەتی بەردەوامیی ئیکۆ-عێراق", image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=1470&auto=format&fit=crop", overview: "بڵاوکردنەوەی هۆشیاری دەربارەی کێشە ژینگەییەکان و برەودان بە کردەوە بەردەوامەکان لەنێو خەڵکدا.", impact: ["گەیشتن بە زیاتر لە 2 ملیۆن کەس لە ڕێگەی هەڵمەتێکی میدیایی یەکخراوەوە.", "بووە هۆی زیادبوونێکی پێوانەکراو لە ڕێژەکانی ڕیسایکلکردن لە کۆمەڵگا ئامانجدارەکاندا."] }
+        ]
+    },
+    valueStats: [
+        { value: 15, suffix: 'M+', label: "بینینی میدیایی" },
+        { value: 98, suffix: '%', label: "ڕەزامەندی کڕیار" },
+        { value: 25, label: "هەڵمەتی سەرکەوتوو" },
+        { value: 8, label: "خەڵاتی پیشەسازی" }
+    ],
+    clients: {
+        title: "هاوبەشەکانمان",
+        subtitle: "شانازی دەکەین بە هاوکاریکردن لەگەڵ براند و ڕێکخراوە پێشەنگەکان.",
+        list: ["Tech Innovators Inc.", "Baghdad Arts & Culture Festival", "Gulf Industries", "Basra Logistics", "National Telecom", "Horizon Bank", "Eco-Iraq"]
+    },
+    careers: {
+        title: "پەیوەست بە بە تیمەکەمان",
+        subtitle: "داهاتووی پەیوەندی لەگەڵ ئێمەدا شێوە بکە. ئێمە بەدوای چیرۆکبێژ و ستراتیژیستی بە حەزدا دەگەڕێین.",
+        culture: {
+            title: "کەلتووری ئێمە",
+            text: "ئێمە ژینگەیەکی هاوکار، داهێنەر، و گشتگیر پەرە پێدەدەین کە تێیدا هەموو دەنگێک دەبیسترێت و هەموو بیرۆکەیەک گرنگە. ئێمە باوەڕمان بە گەشەکردن هەیە، هەم بۆ کڕیارەکانمان و هەم بۆ تیمەکەمان.",
+            perks: {
+                title: "ئەوەی پێشکەشی دەکەین",
+                items: ["مووچەی کێبڕکێکار", "دڵنیایی تەندروستی", "پەرەپێدانی پیشەیی", "کاتژمێرەکانی کاری نەرم", "شوێنی کاری داهێنەرانە", "بۆنەکانی تیم"]
+            }
+        },
+        openings: {
+            title: "هەلە کراوەکانی ئێستا",
+            cta: "ئێستا داواکاری پێشکەش بکە",
+            jobs: [
+                { title: "پسپۆڕی پەیوەندییە گشتییەکان", location: "بەغدا", type: "کاتی تەواو" },
+                { title: "بەڕێوەبەری بازاڕکردنی دیجیتاڵی", location: "سلێمانی", type: "کاتی تەواو" },
+                { title: "دیزاینەری گرافیک", location: "دوورکاری", type: "گرێبەست" }
+            ]
+        }
+    },
     contact: {
-        title: "با چیرۆکەکەت لەگەڵ ئێمە دەست پێ بکات",
-        subtitle: "گێڕانەوەی مەزن هەروا بەڕێکەوت دروست نابن؛ بە وردی دادەڕێژرێن. چیرۆکەکەت شایەنی ئەوەیە بەهێز بگێڕدرێتەوە. پێکەوە، با بەشی dاهاتووی سەرنجڕاکێش بنووسین.",
-        details: { title: "زانیارییەکانی پەیوەندی", address: "عێراق-بەغداد", email: "info@prt.agency", phone: "+964 772 211 1118" },
-        form: { 
-            name: "ناوی تۆ", 
-            email: "ئیمەیڵی تۆ", 
-            message: "نامەکەت", 
-            submit: "ناردنی نامە", 
+        title: "پەیوەندیمان پێوە بکە",
+        subtitle: "چیرۆکێکت هەیە بۆ گێڕانەوە؟ ئێمە لێرەین بۆ گوێگرتن. با پێکەوە شتێکی کاریگەر دروست بکەین.",
+        details: {
+            title: "وردەکارییەکانی پەیوەندی",
+            address: "123 شەقامی مەنسوور، بەغدا، عێراق",
+            email: "hello@prt.iq",
+            phone: "+964 780 123 4567"
+        },
+        form: {
+            name: "ناوی تۆ",
+            email: "ئیمەیڵی تۆ",
+            message: "پەیامی تۆ",
+            submit: "ناردنی پەیام",
             sending: "ناردن...",
-            success: { title: "سوپاس!", message: "نامەکەت بە سەرکەوتوویی نێردرا. بەم زووانە پەیوەندیت پێوە دەکەین." }
-         },
+            success: {
+                title: "سوپاس!",
+                message: "پەیامەکەت بە سەرکەوتوویی نێردرا. بە زوویی پەیوەندیت پێوە دەکەین."
+            }
+        }
     },
     footer: {
-        subtitle: "شارەزابوون لە هونەری پەیوەندییە گشتییەکان",
-        email: "info@prt.agency",
-        copyright: "© {year} ئاژانسی PRt. هەموو مافەکان پارێزراون.",
+        subtitle: "گێڕانەوەکان کە کاریگەری لەسەر نەوەکان دادەنێن.",
+        email: "hello@prt.iq",
+        copyright: "© {year} ئاژانسی PRt. هەموو مافەکان پارێزراون."
     }
-  }
+};
+
+export const translations: { [key: string]: Translations } = {
+  en: enTranslations,
+  ar: arTranslations,
+  ku: kuTranslations,
 };

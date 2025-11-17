@@ -36,10 +36,30 @@
                 '0%': { opacity: 0, transform: 'scale(0.9)' },
                 '100%': { opacity: 1, transform: 'scale(1)' },
               },
+              spin: {
+                'from': { transform: 'rotateY(0deg) rotateX(5deg)' },
+                'to': { transform: 'rotateY(360deg) rotateX(5deg)' },
+              },
+              revealText: {
+                'from': { 'clip-path': 'inset(0 100% 0 0)' },
+                'to': { 'clip-path': 'inset(0 0 0 0)' },
+              },
+              drawWidth: {
+                'from': { transform: 'scaleX(0)' },
+                'to': { transform: 'scaleX(1)' },
+              },
+              drawHeight: {
+                'from': { transform: 'scaleY(0)' },
+                'to': { transform: 'scaleY(1)' },
+              }
             },
             animation: {
               'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
               'scale-in': 'scaleIn 0.6s ease-out forwards',
+              'spin-slow': 'spin 45s linear infinite',
+              'reveal-text': 'revealText 1s cubic-bezier(0.645, 0.045, 0.355, 1) forwards',
+              'draw-width': 'drawWidth 0.7s ease-out forwards',
+              'draw-height': 'drawHeight 0.7s ease-out forwards'
             }
           }
         }
@@ -136,6 +156,20 @@
           opacity: 1;
           transform: translateX(0);
         }
+      }
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(-3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .text-to-reveal {
+        clip-path: inset(0 100% 0 0);
+        /* Add this to prevent flash of un-styled content before animation starts */
+        opacity: 0; 
+      }
+      .animate-reveal-text {
+        opacity: 1;
       }
     </style>
   <script type="importmap">

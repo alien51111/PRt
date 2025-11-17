@@ -5,11 +5,6 @@ export interface ServiceCategory {
   items: string[];
 }
 
-export interface ProjectSummary {
-  title: string;
-  description: string;
-}
-
 export interface Project {
   title: string;
   image: string;
@@ -20,7 +15,7 @@ export interface Project {
 
 export interface CoreBelief {
   title: string;
-  description: string;
+  description:string;
   icon?: string;
 }
 
@@ -36,4 +31,23 @@ export interface Job {
   title: string;
   location: string;
   type: string;
+}
+
+export interface Insight {
+  topic: string;
+  expertName: string;
+  expertTitle: string;
+  expertImage: string;
+}
+
+export interface Testimonial {
+  quote: string;
+  author: string;
+  title: string;
+}
+
+export interface TeamMember {
+  name: string;
+  title: string;
+  image: string;
 }
