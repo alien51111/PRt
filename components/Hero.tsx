@@ -3,6 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const Hero: React.FC = () => {
   const buttonRef = useRef<HTMLAnchorElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { t, setPage } = useLanguage();
 
   useEffect(() => {
@@ -40,6 +41,14 @@ const Hero: React.FC = () => {
 
     moveArea.addEventListener('mousemove', handleMouseMove);
     moveArea.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Ensure video plays
+    if(videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Silently ignore autoplay errors (e.g. AbortError, NotAllowedError)
+        // caused by browser policies or power saving modes.
+      });
+    }
 
     return () => {
         moveArea.removeEventListener('mousemove', handleMouseMove);
@@ -57,6 +66,7 @@ const Hero: React.FC = () => {
     <section className="min-h-screen flex flex-col items-center justify-center relative bg-black overflow-hidden text-center">
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <video 
+          ref={videoRef}
           src="https://videos.pexels.com/video-files/3141208/3141208-hd_1920_1080_25fps.mp4" 
           poster="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1920&auto=format&fit=crop"
           autoPlay

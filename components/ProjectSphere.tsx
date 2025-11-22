@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Project } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -8,9 +9,8 @@ interface ProjectSphereProps {
 
 const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [sphereRotation, setSphereRotation] = useState({ x: 10, y: 15 });
+  const [sphereRotation, setSphereRotation] = useState({ x: 0, y: 0 });
   const [isInteracting, setIsInteracting] = useState(false);
-  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
   const { t } = useLanguage();
 
   const isDraggingRef = useRef(false);
@@ -20,24 +20,20 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
 
   const sphereRadius = 380;
 
-  useEffect(() => {
-    // When the active project changes, reset the expanded state
-    setIsDetailsExpanded(false);
-  }, [activeProject]);
+  // Dynamically calculate positions in a single horizontal line (Ring)
+  const positions = useMemo(() => {
+    return projects.map((_, i) => {
+      // Evenly distribute along the equator (horizontal line)
+      // theta goes from 0 to 2PI
+      const theta = (i / projects.length) * Math.PI * 2;
+      // phi is fixed at PI/2 (90 degrees) for the equator
+      return { phi: Math.PI / 2, theta };
+    });
+  }, [projects.length]);
 
   const projectTransforms = useMemo(() => {
-    const positions = [
-      { phi: Math.PI / 2, theta: 0 }, // 0: Front
-      { phi: Math.PI / 2, theta: Math.PI * 0.4 }, // 1: Right
-      { phi: Math.PI / 2, theta: -Math.PI * 0.4 }, // 2: Left
-      { phi: Math.PI / 2, theta: Math.PI * 0.85 }, // 3: Back Right
-      { phi: Math.PI / 2, theta: -Math.PI * 0.85 }, // 4: Back Left
-      { phi: Math.PI * 0.2, theta: 0 }, // 5: Top
-      { phi: Math.PI * 0.8, theta: Math.PI }, // 6: Bottom
-    ];
-
     return projects.map((_, i) => {
-      const pos = positions[i % positions.length];
+      const pos = positions[i];
       const phi = pos.phi;
       const theta = pos.theta;
 
@@ -54,10 +50,11 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
         },
       };
     });
-  }, [projects, sphereRadius]);
+  }, [projects, sphereRadius, positions]);
 
   const handleInteractionStart = (clientX: number, clientY: number) => {
-    if (activeProject) return;
+    if(activeProject) setActiveProject(null);
+
     isDraggingRef.current = true;
     dragStartRef.current = { x: clientX, y: clientY };
     startRotationRef.current = sphereRotation;
@@ -65,35 +62,42 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   };
 
   const handleInteractionMove = (clientX: number, clientY: number) => {
-    if (!isDraggingRef.current || activeProject) return;
+    if (!isDraggingRef.current) return;
     const deltaX = clientX - dragStartRef.current.x;
     const deltaY = clientY - dragStartRef.current.y;
     const rotationSensitivity = 0.25;
 
-    let newRotationX = startRotationRef.current.x - deltaY * rotationSensitivity;
+    // Lock X rotation to 0 (or very small range) to keep it looking like a "one line" horizontal ring
+    // If you want strictly one line, newRotationX should stay 0.
+    const newRotationX = 0; 
     const newRotationY = startRotationRef.current.y + deltaX * rotationSensitivity;
     
-    newRotationX = Math.max(-90, Math.min(90, newRotationX));
-
     setSphereRotation({ x: newRotationX, y: newRotationY });
   };
 
   const handleInteractionEnd = () => {
-    if(activeProject) return;
     isDraggingRef.current = false;
     setTimeout(() => {
         if (!isDraggingRef.current) setIsInteracting(false)
     }, 200);
   };
 
-  const handleProjectClick = (e: React.MouseEvent, project: Project) => {
+  const handleProjectClick = (e: React.MouseEvent, project: Project, index: number) => {
     e.stopPropagation();
     isDraggingRef.current = false;
-    if (activeProject && activeProject.title === project.title) {
-        setActiveProject(null);
-    } else {
-        setActiveProject(project);
-    }
+    
+    // Center the project
+    const pos = positions[index];
+    
+    // Calculate the Y rotation needed to bring this item to the front (0 degrees)
+    // Item is currently at `pos.theta`. We need to rotate the container by `-pos.theta`.
+    const targetY = -pos.theta * (180 / Math.PI);
+    
+    // Target X is 0 because we are on the equator
+    const targetX = 0;
+
+    setSphereRotation({ x: targetX, y: targetY });
+    setActiveProject(project);
   };
   
   const handleClose = () => {
@@ -115,29 +119,23 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   }, [activeProject]);
 
   const OrbitalLines = () => (
-    <div className="absolute inset-0 w-full h-full pointer-events-none" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(90deg)' }}>
-      <div className="absolute inset-0 border border-prt-muted-gray/5 rounded-full opacity-50" style={{ transform: 'scale(0.7)' }}></div>
-      <div className="absolute inset-0 border border-prt-muted-gray/5 rounded-full opacity-50" style={{ transform: 'scale(1.4)' }}></div>
-      <div className="absolute inset-0 border-2 border-prt-muted-gray/5 rounded-full opacity-30" style={{ transform: 'translateY(-15%) scale(1.8) rotateX(20deg)' }}></div>
-      <div className="absolute inset-0 border border-prt-muted-gray/5 rounded-full opacity-30" style={{ transform: 'translateY(15%) scale(2.2) rotateX(-20deg)' }}></div>
+    <div className="absolute inset-0 w-full h-full pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+      {/* Main equatorial ring */}
+      <div className="absolute inset-0 border border-prt-muted-gray/20 rounded-full opacity-50" style={{ transform: 'rotateX(90deg)' }}></div>
     </div>
   );
 
   return (
     <div 
         ref={containerRef}
-        onClick={handleClose}
         className="relative w-full h-[80vh] min-h-[700px] flex items-center justify-center overflow-hidden"
     >
       <div 
         className={`w-full h-full absolute transition-all duration-1000 ease-in-out`}
-        style={{ perspective: '2000px', transform: activeProject ? 'translateX(-25%)' : 'translateX(0)' }}
+        style={{ perspective: '2000px' }}
       >
          <div 
-            className={`
-            w-full h-full
-            ${!activeProject ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}
-            `}
+            className={`w-full h-full cursor-grab active:cursor-grabbing`}
             onMouseDown={(e) => handleInteractionStart(e.clientX, e.clientY)}
             onMouseMove={(e) => handleInteractionMove(e.clientX, e.clientY)}
             onMouseUp={handleInteractionEnd}
@@ -174,11 +172,13 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
                             style={projectTransforms[index].style}
                         >
                             <div
-                            onClick={(e) => handleProjectClick(e, project)}
+                            onClick={(e) => handleProjectClick(e, project, index)}
                             className={`
                                 w-full h-full bg-black cursor-pointer group overflow-hidden border 
                                 transition-all duration-700 ease-in-out
-                                ${activeProject ? (isActive ? 'border-prt-accent shadow-2xl shadow-prt-accent/30 scale-110' : 'opacity-20 blur-sm scale-90') : 'opacity-60 hover:opacity-100 border-prt-muted-gray/20 hover:border-prt-accent/50 hover:scale-110'}
+                                ${isActive 
+                                    ? 'border-prt-accent shadow-2xl shadow-prt-accent/30 scale-150 z-50' 
+                                    : 'opacity-60 hover:opacity-100 border-prt-muted-gray/20 hover:border-prt-accent/50 hover:scale-110 grayscale hover:grayscale-0'}
                             `}
                             >
                             <img 
@@ -186,10 +186,10 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
                                 alt={project.title} 
                                 className={`
                                 w-full h-full object-cover transition-all duration-700
-                                ${activeProject && !isActive ? 'grayscale' : 'grayscale-0'} group-hover:grayscale-0
+                                ${isActive ? 'grayscale-0' : 'grayscale'}
                                 `}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                            <div className={`absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity ${isActive ? 'opacity-0' : 'opacity-100'}`} />
                             </div>
                         </div>
                         );
@@ -200,60 +200,81 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
         </div>
       </div>
       
+      {/* Left Panel: Title & Overview */}
        <div 
         className={`
-            absolute right-0 w-2/5 max-w-lg px-8 text-prt-light-gray
-            transition-all duration-1000 ease-in-out pointer-events-auto
-            ${activeProject ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}
+            absolute left-[5%] top-1/2 -translate-y-1/2 w-[25%] text-left pointer-events-none
+            transition-all duration-700 ease-out
+            ${activeProject ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
         `}
-        onClick={e => e.stopPropagation()}
        >
            {activeProject && (
-               <div className="animate-fade-in-up" style={{ animationDelay: '300ms', opacity: 0 }}>
-                   <h3 className="text-3xl font-bold text-prt-accent mb-4">{activeProject.title}</h3>
-                   <p className="text-prt-light-gray/80 leading-relaxed text-base mb-4">{activeProject.overview}</p>
-                   
-                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isDetailsExpanded ? 'max-h-[1000px]' : 'max-h-0'}`}>
-                        <div className="space-y-6 pb-4">
-                            {activeProject.approach && activeProject.approach.length > 0 && (
-                              <div>
-                                <h4 className="text-xl font-bold text-prt-light-gray mb-3 border-b border-prt-muted-gray/20 pb-2">{t.projects.approachLabel}</h4>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-prt-light-gray/80">
-                                  {activeProject.approach.map((item, index) => <li key={index}>{item}</li>)}
-                                </ul>
-                              </div>
-                            )}
-
-                            {activeProject.impact && activeProject.impact.length > 0 && (
-                                <div>
-                                    <h4 className="text-xl font-bold text-prt-light-gray mb-3 border-b border-prt-muted-gray/20 pb-2">{t.projects.impactLabel}</h4>
-                                    <ul className="list-disc list-inside space-y-2 text-sm text-prt-light-gray/80">
-                                    {activeProject.impact.map((item, index) => <li key={index}>{item}</li>)}
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
-                   </div>
-
-                   <button 
-                     onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
-                     className="text-prt-light-gray/80 underline hover:text-prt-accent transition-colors"
-                   >
-                     {isDetailsExpanded ? t.projects.cta_show_less : t.projects.cta_show_more}
-                   </button>
+               <div className="animate-fade-in-up text-shadow-lg" style={{ animationDelay: '100ms' }}>
+                   <h3 className="text-3xl md:text-4xl font-bold text-prt-accent mb-6 leading-tight">{activeProject.title}</h3>
+                   <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-2 border-b border-prt-accent/50 inline-block pb-1">Overview</h4>
+                   <p className="text-white/90 leading-relaxed text-lg">{activeProject.overview}</p>
                </div>
            )}
        </div>
 
-      <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${activeProject ? 'opacity-0' : 'opacity-100'}`}>
-          <div className="text-center text-prt-muted-gray animate-fade-in-up opacity-0" style={{animationDelay: '300ms'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-              </svg>
-              <p className="font-semibold text-lg text-prt-light-gray/80">A Universe of Stories</p>
-              <p className="text-sm">Click and drag to explore, or select a project.</p>
+      {/* Right Panel: Approach & Impact */}
+       <div 
+        className={`
+            absolute right-[5%] top-1/2 -translate-y-1/2 w-[25%] text-left pointer-events-none
+            transition-all duration-700 ease-out
+            ${activeProject ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}
+        `}
+       >
+           {activeProject && (
+               <div className="animate-fade-in-up text-shadow-lg space-y-8" style={{ animationDelay: '300ms' }}>
+                    {activeProject.approach && activeProject.approach.length > 0 && (
+                        <div>
+                        <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.approachLabel}</h4>
+                        <ul className="space-y-2 text-sm text-white/90">
+                            {activeProject.approach.map((item, index) => (
+                                <li key={index} className="flex items-start">
+                                    <span className="text-prt-accent mr-2 mt-1">▪</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        </div>
+                    )}
+
+                    {activeProject.impact && activeProject.impact.length > 0 && (
+                        <div>
+                            <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.impactLabel}</h4>
+                            <ul className="space-y-2 text-sm text-white/90">
+                            {activeProject.impact.map((item, index) => (
+                                <li key={index} className="flex items-start">
+                                    <span className="text-prt-accent mr-2 mt-1">▪</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                            </ul>
+                        </div>
+                    )}
+               </div>
+           )}
+       </div>
+
+       {/* CTA / Instructions when inactive */}
+      <div className={`absolute bottom-10 inset-x-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${activeProject ? 'opacity-0' : 'opacity-100'}`}>
+          <div className="text-center text-prt-muted-gray animate-pulse">
+              <p className="font-semibold text-lg text-prt-light-gray/80 tracking-wider uppercase">Drag to Explore • Click to Reveal</p>
           </div>
       </div>
+      
+      {/* Close Button when active */}
+      {activeProject && (
+          <button 
+            onClick={handleClose}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-prt-light-gray hover:text-prt-accent border border-prt-muted-gray/50 px-6 py-2 rounded-full backdrop-blur-md transition-colors z-50"
+          >
+              Close Detail
+          </button>
+      )}
+
     </div>
   );
 };

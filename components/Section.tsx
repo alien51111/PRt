@@ -41,18 +41,20 @@ const Section: React.FC<SectionProps> = ({ id, title, subtitle, children, classN
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <div className="text-center mb-12 md:mb-20">
-          <div className="inline-block relative p-4">
-             <h2 className="text-3xl md:text-5xl font-bold text-prt-light-gray">
-                {title}
-             </h2>
+        {title && (
+          <div className="text-center mb-12 md:mb-20">
+            <div className="inline-block relative p-4">
+               <h2 className="text-3xl md:text-5xl font-bold text-prt-light-gray">
+                  {title}
+               </h2>
+            </div>
+            {subtitle && (
+              <p className="mt-4 max-w-3xl mx-auto text-lg text-prt-muted-gray">
+                {subtitle}
+              </p>
+            )}
           </div>
-          {subtitle && (
-            <p className="mt-4 max-w-3xl mx-auto text-lg text-prt-muted-gray">
-              {subtitle}
-            </p>
-          )}
-        </div>
+        )}
         {children}
       </div>
     </section>

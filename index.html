@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
@@ -6,8 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PRt Agency | Bridging Heritage & Innovation</title>
     <script src="https://cdn.tailwindcss.com?plugins=line-clamp"></script>
+    
+    <!-- Performance Optimization: Preconnect to external image sources -->
+    <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://media.licdn.com" />
+    <link rel="preconnect" href="https://framerusercontent.com" />
+    <link rel="preconnect" href="https://sharjahevents.ae" />
+    <link rel="preconnect" href="https://iraqbritainbusiness.org" />
+
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
@@ -37,8 +46,8 @@
                 '100%': { opacity: 1, transform: 'scale(1)' },
               },
               spin: {
-                'from': { transform: 'rotateY(0deg) rotateX(5deg)' },
-                'to': { transform: 'rotateY(360deg) rotateX(5deg)' },
+                'from': { transform: 'rotateY(0deg)' },
+                'to': { transform: 'rotateY(360deg)' },
               },
               revealText: {
                 'from': { 'clip-path': 'inset(0 100% 0 0)' },

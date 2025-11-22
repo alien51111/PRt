@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { TeamMember } from '../types';
 
 const Team: React.FC = () => {
   const { t } = useLanguage();
   const { team: teamTranslations } = t.about;
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
 
   return (
-    <section id="team" className="bg-[#030303] py-20 md:py-32">
+    <section id="team" ref={sectionRef} className="bg-[#030303] py-20 md:py-32">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-12 md:mb-20">
+        <div 
+          className={`text-center mb-12 md:mb-20 transition-all duration-1000 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="inline-block relative p-4">
              <h2 className="text-3xl md:text-5xl font-bold text-prt-light-gray">
                 {teamTranslations.title}
@@ -24,13 +52,15 @@ const Team: React.FC = () => {
           {teamTranslations.members.map((member: TeamMember, index: number) => (
             <div 
               key={index}
-              className="
+              className={`
                 bg-prt-dark-green p-3 rounded-xl shadow-lg 
-                transition-all duration-300 ease-in-out 
+                transition-all duration-700 ease-out 
                 hover:transform hover:-translate-y-2 
                 hover:shadow-2xl hover:shadow-prt-accent/10
-                animate-fade-in-up"
-              style={{ animationDelay: `${index * 100}ms`, opacity: 0 }}
+                transform
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}
+              `}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className="relative">
                 <img 

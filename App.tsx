@@ -1,8 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import About from './components/About';
-import Services from './components/Services';
 import Projects from './components/Projects';
 import Careers from './components/Careers';
 import Contact from './components/Contact';
@@ -33,12 +33,9 @@ const App: React.FC = () => {
     switch(page) {
       case 'about':
         return <About />;
-      case 'services':
-        return <Services />;
       case 'projects':
         return <Projects />;
       case 'careers':
-        // Fix: Corrected typo `setApplyingForforJob` to `setApplyingForJob`.
         return <Careers onApply={setApplyingForJob} />;
       case 'contact':
         return <Contact />;

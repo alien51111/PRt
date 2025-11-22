@@ -1,3 +1,4 @@
+
 export interface ServiceCategory {
   title: string;
   description: string;
@@ -7,6 +8,7 @@ export interface ServiceCategory {
 
 export interface Project {
   title: string;
+  category: string; // Added category
   image: string;
   overview: string;
   approach?: string[];
@@ -38,6 +40,7 @@ export interface Insight {
   expertName: string;
   expertTitle: string;
   expertImage: string;
+  content: string[]; // Added content for the modal
 }
 
 export interface Testimonial {

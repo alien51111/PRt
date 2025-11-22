@@ -1,116 +1,183 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Process: React.FC = () => {
   const { t } = useLanguage();
   const { process: processTranslations } = t;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % processTranslations.steps.length);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
 
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + processTranslations.steps.length) % processTranslations.steps.length);
-  };
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
-  const icons = processTranslations.steps.map(step => step.icon);
-  
-  const floatingIcons = [
-    { icon: icons[0], top: '15%', left: '5%', size: 48, delay: '0s', duration: '8s' },
-    { icon: icons[1], top: '25%', left: '90%', size: 64, delay: '2s', duration: '10s' },
-    { icon: icons[2], top: '70%', left: '10%', size: 56, delay: '4s', duration: '9s' },
-    { icon: icons[3], top: '80%', left: '85%', size: 40, delay: '6s', duration: '12s' },
-    { icon: icons[1], top: '50%', left: '55%', size: 32, delay: '1s', duration: '7s' },
-    { icon: icons[3], top: '5%', left: '30%', size: 36, delay: '3s', duration: '11s' },
-  ];
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
 
   return (
-    <section id="process" className="relative py-20 md:py-32 overflow-hidden bg-black text-prt-light-gray">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute -left-1/4 -top-1/4 w-1/2 h-1/2 bg-[radial-gradient(circle_at_center,_rgba(203,255,8,0.1)_0%,_transparent_50%)]"></div>
-        <div className="absolute -right-1/4 -bottom-1/4 w-1/2 h-1/2 bg-[radial-gradient(circle_at_center,_rgba(203,255,8,0.1)_0%,_transparent_60%)]"></div>
+    <section id="process" ref={sectionRef} className="relative min-h-screen flex items-center overflow-hidden bg-black">
+      {/* Background from Technology Section */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <img 
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop" 
+          alt="Technology collaboration background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
       </div>
 
-      {/* Floating Icons Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {floatingIcons.map((item, index) => (
-          <div
-            key={index}
-            className="absolute text-prt-accent/10"
-            style={{
-              top: item.top,
-              left: item.left,
-              width: `${item.size}px`,
-              height: `${item.size}px`,
-              animation: `float ${item.duration} ease-in-out infinite`,
-              animationDelay: item.delay,
-            }}
-            dangerouslySetInnerHTML={{ __html: item.icon }}
-          />
-        ))}
-      </div>
-      
-      <div className="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
-        {/* Left Column: Text and Navigation */}
-        <div className="rtl:text-right">
-          <h2 className="text-4xl md:text-5xl font-extrabold uppercase leading-tight tracking-wide">
-            {processTranslations.title.split(' ').map((word, index) => (
-                <span key={index} className="block">{word}</span>
-            ))}
-          </h2>
-          <p className="mt-6 text-lg text-prt-muted-gray max-w-md">
-            {processTranslations.subtitle}
-          </p>
-          <div className="mt-10 flex items-center space-x-4 rtl:space-x-reverse">
-            <button onClick={handlePrev} aria-label="Previous step" className="w-12 h-12 flex items-center justify-center border-2 border-prt-muted-gray/50 text-prt-muted-gray/80 hover:border-prt-accent hover:text-prt-accent transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transform rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </button>
-            <button onClick={handleNext} aria-label="Next step" className="w-12 h-12 flex items-center justify-center border-2 border-prt-muted-gray/50 text-prt-muted-gray/80 hover:border-prt-accent hover:text-prt-accent transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transform rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Right Column: 3D Card Carousel */}
-        <div className="relative h-[450px] w-full" style={{ perspective: '1200px' }}>
-          {processTranslations.steps.map((step, index) => {
-            const offset = index - activeIndex;
-            const isVisible = Math.abs(offset) <= 1;
-            
-            const style = {
-              transform: `translateX(${offset * 70}%) scale(${1 - Math.abs(offset) * 0.2}) translateZ(${-Math.abs(offset) * 100}px) rotateY(${offset * -25}deg)`,
-              opacity: isVisible ? (offset === 0 ? 1 : 0.3) : 0,
-              zIndex: processTranslations.steps.length - Math.abs(offset),
-              pointerEvents: offset === 0 ? 'auto' : 'none',
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
-            } as React.CSSProperties;
-
-            return (
-              <div
-                key={index}
-                className={`absolute w-full h-full p-8 border border-prt-accent/20 bg-prt-dark-gray/30 backdrop-blur-sm shadow-2xl shadow-prt-dark-gray flex flex-col justify-center
-                  ${offset === 0 ? 'shadow-[0_0_45px_rgba(203,255,8,0.2)]' : ''}
-                `}
-                style={style}
-              >
-                <div className="flex items-start space-x-4 rtl:space-x-reverse">
-                  <div className="flex-shrink-0 text-prt-accent" dangerouslySetInnerHTML={{ __html: step.icon }} />
-                  <div>
-                     <h3 className="text-xl font-bold text-prt-accent mb-3">{`0${index + 1}. ${step.title}`}</h3>
-                     <p className="text-prt-light-gray/80">{step.description}</p>
-                  </div>
-                </div>
+      <div className="container mx-auto px-6 relative z-10 h-full py-20 md:py-0 min-h-screen flex flex-col md:flex-row">
+        
+        {/* Left Side: Text */}
+        <div 
+          className={`
+            w-full md:w-1/2 flex flex-col justify-center md:pr-12 rtl:md:pr-0 rtl:md:pl-12 mb-12 md:mb-0 pointer-events-none
+            transition-all duration-1000 ease-out
+            ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
+          `}
+        >
+           <div className="pointer-events-auto">
+              <div className="inline-block mb-6">
+                 <h2 className="text-5xl md:text-7xl font-bold text-white mb-2">{processTranslations.title}</h2>
+                 <div className="h-2 w-24 bg-prt-accent"></div>
               </div>
-            );
-          })}
+              <p className="text-xl md:text-2xl text-prt-light-gray/80 leading-relaxed max-w-lg">
+                {processTranslations.subtitle}
+              </p>
+           </div>
+        </div>
+
+        {/* Right Side: Interactive Area */}
+        <div 
+          className={`
+            w-full md:w-1/2 relative flex items-end justify-end min-h-[500px]
+            transition-all duration-1000 delay-300 ease-out
+            ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}
+          `}
+        >
+          
+          {/* The Active Card Area - Positioned Bottom Right */}
+          <div className="relative w-full h-full flex items-end justify-end pb-24 pr-4 md:pr-0">
+            {processTranslations.steps.map((step, index) => (
+               index === activeIndex && (
+                <div 
+                  key={step.id}
+                  className="
+                    relative w-full max-w-md aspect-square bg-prt-dark-gray/95 
+                    border border-prt-accent/30 shadow-2xl shadow-prt-accent/10
+                    flex flex-col p-8 md:p-12
+                    origin-bottom-right
+                  "
+                  style={{
+                    animation: 'popup 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                    borderRadius: '0px' // Sharp edges
+                  }}
+                >
+                  <div className="flex justify-between items-start mb-8">
+                     <span className="text-6xl font-bold text-prt-accent/20 font-plex">{step.id}</span>
+                     {/* Small decoration */}
+                     <div className="w-4 h-4 bg-prt-accent rounded-none"></div>
+                  </div>
+                  
+                  <h3 className="text-3xl font-bold text-white mb-6">{step.title}</h3>
+                  
+                  <ul className="space-y-3 overflow-y-auto custom-scrollbar flex-grow">
+                    {step.items.map((item, i) => (
+                      <li key={i} className="flex items-start text-prt-light-gray/80">
+                        <span className="text-prt-accent mr-3 rtl:ml-3 mt-1.5 text-xs">■</span>
+                        <span className="text-sm md:text-base">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+               )
+            ))}
+          </div>
+
+          {/* Rotary Dial Navigation - Fixed at Bottom Right */}
+          <div className="absolute bottom-0 right-0 md:bottom-8 md:right-8 p-4">
+             <div className="relative w-48 h-48 rounded-full border border-prt-muted-gray/20 bg-black/40 backdrop-blur-md flex items-center justify-center">
+                {/* Dial Center Decoration */}
+                <div className="absolute w-24 h-24 border border-dashed border-prt-muted-gray/30 rounded-full animate-spin-slow"></div>
+                
+                {processTranslations.steps.map((step, index) => {
+                  // Position buttons in a circle
+                  const total = processTranslations.steps.length;
+                  const angle = (index / total) * 2 * Math.PI - (Math.PI / 2); // Start from top
+                  const radius = 65; // px
+                  const left = 50 + (Math.cos(angle) * radius / 1.92); // % approximation (192px width/2 approx 96)
+                  const top = 50 + (Math.sin(angle) * radius / 1.92); 
+
+                  // Calculate exact pixel offsets for cleaner CSS positioning
+                  const x = Math.cos(angle) * radius;
+                  const y = Math.sin(angle) * radius;
+
+                  const isActive = index === activeIndex;
+
+                  return (
+                    <button
+                      key={step.id}
+                      onClick={() => setActiveIndex(index)}
+                      className={`
+                        absolute w-10 h-10 flex items-center justify-center 
+                        transition-all duration-300 ease-out z-20
+                        border
+                      `}
+                      style={{
+                        transform: `translate(${x}px, ${y}px) ${isActive ? 'scale(0.8)' : 'scale(1)'}`, // Active shrinks to simulate "being inside" or pressed
+                        borderRadius: '0px', // Sharp edges
+                        backgroundColor: isActive ? '#CBFF08' : '#30332D',
+                        borderColor: isActive ? '#CBFF08' : '#8A8B7D',
+                        color: isActive ? '#000' : '#fff',
+                      }}
+                      aria-label={`View step ${step.id}`}
+                    >
+                      {isActive ? (
+                        // Small square dot when active
+                        <div className="w-3 h-3 bg-black"></div>
+                      ) : (
+                        <span className="text-xs font-bold">{step.id}</span>
+                      )}
+                    </button>
+                  );
+                })}
+             </div>
+          </div>
+
         </div>
       </div>
+
+      <style>{`
+        @keyframes popup {
+          0% { transform: scale(0); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255,255,255,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #CBFF08;
+        }
+      `}</style>
     </section>
   );
 };

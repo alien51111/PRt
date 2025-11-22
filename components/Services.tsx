@@ -10,7 +10,7 @@ const Services: React.FC = () => {
   const activeService = servicesTranslations.items[activeServiceIndex];
 
   return (
-    <Section id="services" title={servicesTranslations.title} className="bg-prt-dark-gray/30 bg-dots-pattern">
+    <Section id="services" title={servicesTranslations.title} className="bg-prt-dark-gray bg-dots-pattern">
       <style>{`
         .service-icon path,
         .service-icon line,
