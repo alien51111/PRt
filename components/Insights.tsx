@@ -103,12 +103,12 @@ const Insights: React.FC = () => {
                   {/* Expert Info (Bottom - Slides up) */}
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <div className="overflow-hidden">
-                          <p className="text-lg font-bold text-white translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                          <p className="text-lg font-bold text-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 delay-75">
                               {insight.expertName}
                           </p>
                       </div>
                       <div className="overflow-hidden">
-                          <p className="text-sm text-prt-muted-gray uppercase tracking-wider translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                          <p className="text-sm text-prt-muted-gray uppercase tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-500 delay-100">
                               {insight.expertTitle}
                           </p>
                       </div>

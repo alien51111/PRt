@@ -11,12 +11,15 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [sphereRotation, setSphereRotation] = useState({ x: 0, y: 0 });
   const [isInteracting, setIsInteracting] = useState(false);
+  const [showFullDetails, setShowFullDetails] = useState(false);
   const { t } = useLanguage();
 
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const startRotationRef = useRef({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number>();
+  const lastTimeRef = useRef<number>(0);
 
   const sphereRadius = 380;
 
@@ -24,7 +27,6 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   const positions = useMemo(() => {
     return projects.map((_, i) => {
       // Evenly distribute along the equator (horizontal line)
-      // theta goes from 0 to 2PI
       const theta = (i / projects.length) * Math.PI * 2;
       // phi is fixed at PI/2 (90 degrees) for the equator
       return { phi: Math.PI / 2, theta };
@@ -52,8 +54,34 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
     });
   }, [projects, sphereRadius, positions]);
 
+  // Auto Rotation Loop
+  useEffect(() => {
+    const animate = (time: number) => {
+      if (lastTimeRef.current === 0) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      // Only auto-rotate if not interacting and no project is active
+      if (!isInteracting && !activeProject && !isDraggingRef.current) {
+        setSphereRotation(prev => ({
+          ...prev,
+          y: prev.y + (0.02 * delta) // Adjust speed: 0.02 deg/ms ~= 20 deg/sec
+        }));
+      }
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isInteracting, activeProject]);
+
   const handleInteractionStart = (clientX: number, clientY: number) => {
-    if(activeProject) setActiveProject(null);
+    if(activeProject) {
+        setActiveProject(null);
+        setShowFullDetails(false);
+    }
 
     isDraggingRef.current = true;
     dragStartRef.current = { x: clientX, y: clientY };
@@ -64,11 +92,9 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
   const handleInteractionMove = (clientX: number, clientY: number) => {
     if (!isDraggingRef.current) return;
     const deltaX = clientX - dragStartRef.current.x;
-    const deltaY = clientY - dragStartRef.current.y;
     const rotationSensitivity = 0.25;
 
-    // Lock X rotation to 0 (or very small range) to keep it looking like a "one line" horizontal ring
-    // If you want strictly one line, newRotationX should stay 0.
+    // Lock X rotation to 0 for the horizontal ring look
     const newRotationX = 0; 
     const newRotationY = startRotationRef.current.y + deltaX * rotationSensitivity;
     
@@ -86,23 +112,37 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
     e.stopPropagation();
     isDraggingRef.current = false;
     
-    // Center the project
     const pos = positions[index];
+    const itemAngleDeg = pos.theta * (180 / Math.PI);
     
-    // Calculate the Y rotation needed to bring this item to the front (0 degrees)
-    // Item is currently at `pos.theta`. We need to rotate the container by `-pos.theta`.
-    const targetY = -pos.theta * (180 / Math.PI);
+    // We want the item to settle slightly to the right of the center (from user POV).
+    // offset = 20 degrees puts it comfortably to the right.
+    const offset = 20; 
+    const currentY = sphereRotation.y;
     
-    // Target X is 0 because we are on the equator
-    const targetX = 0;
+    // Calculate the shortest rotation path
+    // The absolute angle of the item in world space is (currentY + itemAngleDeg)
+    // We want that to equal 'offset'.
+    // So: currentY + itemAngleDeg + delta = offset
+    // delta = offset - (currentY + itemAngleDeg)
+    
+    const currentAbsoluteAngle = currentY + itemAngleDeg;
+    let diff = offset - currentAbsoluteAngle;
+    
+    // Normalize diff to -180 to 180 for shortest path
+    diff = ((diff % 360) + 540) % 360 - 180;
+    
+    const targetY = currentY + diff;
 
-    setSphereRotation({ x: targetX, y: targetY });
+    setSphereRotation({ x: 0, y: targetY });
     setActiveProject(project);
+    setShowFullDetails(false); // Reset details on new selection
   };
   
   const handleClose = () => {
       if(activeProject) {
           setActiveProject(null);
+          setShowFullDetails(false);
       }
   }
 
@@ -146,7 +186,9 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
             onMouseEnter={() => { if (!activeProject) setIsInteracting(true); }}
         >
             <div
-            className="relative w-full h-full transition-transform duration-1000 ease-in-out"
+            // Apply transition only when snapping to a project. 
+            // During auto-rotation or drag, we want instant updates (no transition).
+            className={`relative w-full h-full ${activeProject ? 'transition-transform duration-1000 ease-in-out' : ''}`}
             style={{
                 transformStyle: 'preserve-3d',
                 transform: `rotateX(${sphereRotation.x}deg) rotateY(${sphereRotation.y}deg)`,
@@ -157,12 +199,11 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
                     style={{ transformStyle: 'preserve-3d' }}
                 >
                     <OrbitalLines />
+                    {/* Items Container */}
                     <div 
-                    className="w-full h-full relative animate-spin-slow"
-                    style={{
-                        transformStyle: 'preserve-3d',
-                        animationPlayState: isInteracting || activeProject ? 'paused' : 'running'
-                    }}>
+                        className="w-full h-full relative"
+                        style={{ transformStyle: 'preserve-3d' }}
+                    >
                     {projects.map((project, index) => {
                         const isActive = activeProject?.title === project.title;
                         return (
@@ -200,60 +241,88 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
         </div>
       </div>
       
-      {/* Left Panel: Title & Overview */}
+      {/* Combined Detail Panel (Left) */}
        <div 
         className={`
-            absolute left-[5%] top-1/2 -translate-y-1/2 w-[25%] text-left pointer-events-none
-            transition-all duration-700 ease-out
-            ${activeProject ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
+            absolute left-[5%] w-[90%] md:w-[35%] text-left 
+            transition-all duration-700 ease-out z-40
+            ${activeProject ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10 pointer-events-none'}
+            ${showFullDetails 
+                ? 'top-[10%] bottom-[10%] pointer-events-auto overflow-y-auto pr-4 translate-y-0' // Expanded
+                : 'top-1/2 -translate-y-1/2 pointer-events-none' // Collapsed
+            }
         `}
        >
+           <style>{`
+             ::-webkit-scrollbar { width: 4px; }
+             ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+             ::-webkit-scrollbar-thumb { background: #CBFF08; }
+           `}</style>
+
            {activeProject && (
-               <div className="animate-fade-in-up text-shadow-lg" style={{ animationDelay: '100ms' }}>
-                   <h3 className="text-3xl md:text-4xl font-bold text-prt-accent mb-6 leading-tight">{activeProject.title}</h3>
+               <div className="animate-fade-in-up text-shadow-lg pointer-events-auto pb-8" style={{ animationDelay: '100ms' }}>
+                   <h3 className="text-3xl md:text-5xl font-bold text-prt-accent mb-6 leading-tight">{activeProject.title}</h3>
                    <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-2 border-b border-prt-accent/50 inline-block pb-1">Overview</h4>
-                   <p className="text-white/90 leading-relaxed text-lg">{activeProject.overview}</p>
-               </div>
-           )}
-       </div>
-
-      {/* Right Panel: Approach & Impact */}
-       <div 
-        className={`
-            absolute right-[5%] top-1/2 -translate-y-1/2 w-[25%] text-left pointer-events-none
-            transition-all duration-700 ease-out
-            ${activeProject ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}
-        `}
-       >
-           {activeProject && (
-               <div className="animate-fade-in-up text-shadow-lg space-y-8" style={{ animationDelay: '300ms' }}>
-                    {activeProject.approach && activeProject.approach.length > 0 && (
-                        <div>
-                        <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.approachLabel}</h4>
-                        <ul className="space-y-2 text-sm text-white/90">
-                            {activeProject.approach.map((item, index) => (
-                                <li key={index} className="flex items-start">
-                                    <span className="text-prt-accent mr-2 mt-1">▪</span>
-                                    <span>{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                        </div>
+                   
+                   {/* Description Area */}
+                   <div className="relative mb-6">
+                       <p className={`text-white/90 leading-relaxed text-lg transition-all duration-500 ${showFullDetails ? '' : 'line-clamp-4'}`}>
+                           {activeProject.overview}
+                       </p>
+                   </div>
+                   
+                   {/* Collapsed State: Read More Button */}
+                   {!showFullDetails && (
+                        <button 
+                            onClick={() => setShowFullDetails(true)}
+                            className="mt-2 text-sm font-bold text-white uppercase tracking-widest border-b border-white hover:text-prt-accent hover:border-prt-accent transition-colors pb-1"
+                        >
+                            Read More
+                        </button>
                     )}
 
-                    {activeProject.impact && activeProject.impact.length > 0 && (
-                        <div>
-                            <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.impactLabel}</h4>
-                            <ul className="space-y-2 text-sm text-white/90">
-                            {activeProject.impact.map((item, index) => (
-                                <li key={index} className="flex items-start">
-                                    <span className="text-prt-accent mr-2 mt-1">▪</span>
-                                    <span>{item}</span>
-                                </li>
-                            ))}
-                            </ul>
-                        </div>
-                    )}
+                   {/* Expanded Content: Approach & Impact */}
+                   {showFullDetails && (
+                       <div className="space-y-8 animate-fade-in mt-8">
+                            {/* Approach */}
+                            {activeProject.approach && activeProject.approach.length > 0 && (
+                                <div>
+                                <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.approachLabel}</h4>
+                                <ul className="space-y-3 text-sm text-white/90">
+                                    {activeProject.approach.map((item, index) => (
+                                        <li key={index} className="flex items-start">
+                                            <span className="text-prt-accent mr-3 mt-1.5 text-xs">■</span>
+                                            <span className="leading-relaxed">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                </div>
+                            )}
+
+                            {/* Impact */}
+                            {activeProject.impact && activeProject.impact.length > 0 && (
+                                <div>
+                                    <h4 className="text-sm font-bold text-prt-light-gray uppercase tracking-widest mb-3 border-b border-prt-accent/50 inline-block pb-1">{t.projects.impactLabel}</h4>
+                                    <ul className="space-y-3 text-sm text-white/90">
+                                    {activeProject.impact.map((item, index) => (
+                                        <li key={index} className="flex items-start">
+                                            <span className="text-prt-accent mr-3 mt-1.5 text-xs">■</span>
+                                            <span className="leading-relaxed">{item}</span>
+                                        </li>
+                                    ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Show Less Button */}
+                            <button 
+                                onClick={() => { setShowFullDetails(false); if(containerRef.current) containerRef.current.scrollTop = 0; }}
+                                className="mt-6 text-xs font-bold text-prt-muted-gray uppercase tracking-widest hover:text-white transition-colors"
+                            >
+                                Show Less
+                            </button>
+                       </div>
+                   )}
                </div>
            )}
        </div>
@@ -269,7 +338,7 @@ const ProjectSphere: React.FC<ProjectSphereProps> = ({ projects }) => {
       {activeProject && (
           <button 
             onClick={handleClose}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-prt-light-gray hover:text-prt-accent border border-prt-muted-gray/50 px-6 py-2 rounded-full backdrop-blur-md transition-colors z-50"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-prt-light-gray hover:text-prt-accent border border-prt-muted-gray/50 px-6 py-2 rounded-full backdrop-blur-md transition-colors z-50 pointer-events-auto"
           >
               Close Detail
           </button>

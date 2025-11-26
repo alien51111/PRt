@@ -45,10 +45,10 @@ const Contact: React.FC = () => {
             <h4 className="text-prt-accent font-mono text-sm tracking-[0.3em] uppercase mb-4">
               {contactTranslations.subtitle}
             </h4>
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-none">
-              {contactTranslations.title.split(' ').map((word, i) => (
-                <span key={i} className="block">{word}</span>
-              ))}
+            
+            {/* Title Update: Single Line */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-12 leading-tight md:whitespace-nowrap">
+              {contactTranslations.title}
             </h2>
 
             <div className="space-y-12">
@@ -166,3 +166,4 @@ const Contact: React.FC = () => {
 };
 
 export default Contact;
+    
