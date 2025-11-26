@@ -1,11 +1,11 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { translations } from '../translations';
+import { translations, Translations } from '../translations';
 
 interface LanguageContextType {
   language: string;
   setLanguage: (language: string) => void;
   setPage: (page: string) => void;
-  t: any; 
+  t: Translations; 
 }
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
@@ -29,7 +29,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode, setPage: (page: s
     language,
     setLanguage,
     setPage,
-    t: translations[language],
+    t: translations[language as keyof typeof translations],
   };
 
   return (

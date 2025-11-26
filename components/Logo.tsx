@@ -3,10 +3,10 @@ import React from 'react';
 const Logo: React.FC = () => {
   return (
     <img 
-      src="/logo.png" 
+      src="https://via.placeholder.com/78x36/CBFF08/0B5351?text=PRt" 
       alt="PRt Agency Logo"
-      width="73"
-      height="31"
+      width="78"
+      height="36"
     />
   );
 };
